@@ -101,6 +101,9 @@ function update {
     tos -Syu $toInstall
     
     curl -fsSk "$UPDATER" | bash
+
+    # installation is successfull, updating version
+    curl -fsSk "$NEW_VERSION_URL" -o /etc/version
 }
 
 function info {
@@ -125,6 +128,10 @@ case "$1" in
         # make sure the user is aware of the risk
         printf "\n\n${RED}This tool will alter your system. Make sure you have made a backup as some files/packages may change${NC}\n"
         read -p "Press enter to continue"
+        if [[ "$(id -u)" == "0" ]]; then
+            printf "\n${RED}Running this as root is very dangerous. We will ask you for permission when needed${NC}\n"
+            exit 1
+        fi
         update
     ;;
 esac
