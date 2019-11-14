@@ -49,10 +49,6 @@ function difference {
 
 # update your system to the new tos version
 function update {
-    # make sure the user is aware of the risk
-    printf "${RED}This tool will alter your system. Make sure you have made a backup as some files/packages may change${NC}\n"
-    read -p "Press enter to continue"
-
     # get the blacklist from the config file
     if [[ -f "/etc/system-updater.conf" ]]; then
         blacklist="$(cat /etc/system-updater.conf | grep exclude.*= | cut -d= -f2 | sed 's:\s*::')"
@@ -102,6 +98,10 @@ case "$1" in
         help
     ;;
     "")
+        difference
+        # make sure the user is aware of the risk
+        printf "\n\n${RED}This tool will alter your system. Make sure you have made a backup as some files/packages may change${NC}\n"
+        read -p "Press enter to continue"
         update
     ;;
 esac
