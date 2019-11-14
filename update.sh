@@ -6,4 +6,4 @@ BLUE='\033[0;35m'
 ORANGE='\033[1;33m'
 NC='\033[0m' # No Color
 
-printf "${RED}STARTING FILE ADJUSTMENT${NC}"
+printf "\n${RED}STARTING FILE ADJUSTMENT${NC}\n"
