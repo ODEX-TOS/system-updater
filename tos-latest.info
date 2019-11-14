@@ -1,0 +1,18 @@
+[Title]
+TOS version 0.5 Beta
+
+[New Features]
+- Added a brightness and volume overlay
+- Added support for oled screens
+- Added dpi scaling for applications
+- Added the possibility to connect to wireless networks from the gui
+- Added nemo as the official file manager
+- Added gnome-system-monitor as the official monitor
+
+
+[Bug fixes]
+- Battery widget now correctly display a 100% filed battery
+- package updater widget no longer requires the user to update the local package database
+- Quake terminal dropdown now correctly functions
+- Action center is now scrollable for smaller screens
+- The correct compton config file is loaded during boot
