@@ -80,7 +80,7 @@ python-dbus
 xorg
 tlp
 tos-grub-theme
-xf86-input-synaptic
+xf86-input-synaptics
 base
 compton-tryone-tos
 materia-gtk-theme
