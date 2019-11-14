@@ -11,7 +11,7 @@ TOS version 0.5 Beta
 
 
 [Bug fixes]
-- Battery widget now correctly display a 100% filed battery
+- Battery widget now correctly display a 100%% filed battery
 - package updater widget no longer requires the user to update the local package database
 - Quake terminal dropdown now correctly functions
 - Action center is now scrollable for smaller screens
