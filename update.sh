@@ -29,3 +29,17 @@ ORANGE='\033[1;33m'
 NC='\033[0m' # No Color
 
 printf "\n${RED}STARTING FILE ADJUSTMENT${NC}\n"
+
+# MUST READ
+# This script needs to be backwards compatible
+# Always check if a file/directory already exists
+# Don't forget that older installation might use file in other locations that expected
+# For example the migration from the user .config directory to the systemwide /etc/xdg directory
+# This required the deletion of the .config/awesome directory. This could have been a user that on purpose wrote scripts in this directory
+# In other words if removing something ask for user permission such as this
+
+# read -p "Migrating from .config/awesome to /etc/xdg/awesome. Are we allowed to delete .config/awesome. If not sure enter y (y/N)" answer
+
+# This makes sure the end user doesn't get annoyed that there custom functionality suddenly disappeared
+
+# BEGIN COMATIBILITY HERE
