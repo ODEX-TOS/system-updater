@@ -83,7 +83,7 @@ system-update # this will scan your system and perform a full upgrade to the lat
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-You can do more than just update your system. For example you can modify the /etc/system-updater.conf to match your system
+You can do more than just update your system. For example you can modify the `/etc/system-updater.conf` to match your system
 
 Here is a short list of options you can perform
 
