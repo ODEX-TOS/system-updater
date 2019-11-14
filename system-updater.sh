@@ -35,6 +35,7 @@ version="v0.1"
 LATEST_INFO_URL="https://raw.githubusercontent.com/ODEX-TOS/system-updater/master/tos-latest.info"
 PACKAGES="https://raw.githubusercontent.com/ODEX-TOS/system-updater/master/packages"
 UPDATER="https://raw.githubusercontent.com/ODEX-TOS/system-updater/master/update.sh"
+NEW_VERSION_URL="https://raw.githubusercontent.com/ODEX-TOS/tos-live/master/toslive/version-edit.txt"
 
 
 function help {
@@ -103,7 +104,7 @@ function update {
 }
 
 function info {
-    printf "Current tos version %s\n" "$(cat /etc/version)"
+    printf "Current tos version: ${ORANGE}%s${NC}\nNewest version: ${ORANGE}%s${NC}\n" "$(cat /etc/version)" "$(curl -fsSk $NEW_VERSION_URL)"
 }
 
 case "$1" in 
