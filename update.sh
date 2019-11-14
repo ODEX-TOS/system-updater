@@ -42,4 +42,7 @@ printf "\n${RED}STARTING FILE ADJUSTMENT${NC}\n"
 
 # This makes sure the end user doesn't get annoyed that there custom functionality suddenly disappeared
 
+
+# Important to know: This file will be ran as the user not as root
+
 # BEGIN COMATIBILITY HERE
