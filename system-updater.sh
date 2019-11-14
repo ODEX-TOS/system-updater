@@ -78,8 +78,8 @@ function update {
             toInstall="$toInstall $item"
         fi 
     done
-    
-    tos -Syu "$toInstall"
+
+    tos -Syu $toInstall
     
     curl -fsSk "$UPDATER" | bash
 }
