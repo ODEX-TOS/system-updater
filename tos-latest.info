@@ -9,6 +9,7 @@ TOS version 0.5 Beta
 - Added nemo as the official file manager
 - Added gnome-system-monitor as the official monitor
 - Arandr can now be opened using the display key
+- AUR packages are now also included in the updater widget
 
 
 [Bug fixes]
@@ -18,3 +19,4 @@ TOS version 0.5 Beta
 - Action center is now scrollable for smaller screens
 - The correct compton config file is loaded during boot
 - Pacman-contrib is now included in the software
+- Battery widget now includes the correct icons
