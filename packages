@@ -94,3 +94,4 @@ linux-firmware
 libarchive
 nemo
 gnome-system-monitor
+pacman-contrib
