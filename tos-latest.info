@@ -8,6 +8,7 @@ TOS version 0.5 Beta
 - Added the possibility to connect to wireless networks from the gui
 - Added nemo as the official file manager
 - Added gnome-system-monitor as the official monitor
+- Arandr can now be opened using the display key
 
 
 [Bug fixes]
@@ -16,3 +17,4 @@ TOS version 0.5 Beta
 - Quake terminal dropdown now correctly functions
 - Action center is now scrollable for smaller screens
 - The correct compton config file is loaded during boot
+- Pacman-contrib is now included in the software
