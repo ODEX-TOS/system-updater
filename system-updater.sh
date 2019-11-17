@@ -37,6 +37,18 @@ PACKAGES="https://raw.githubusercontent.com/ODEX-TOS/system-updater/master/packa
 UPDATER="https://raw.githubusercontent.com/ODEX-TOS/system-updater/master/update.sh"
 NEW_VERSION_URL="https://raw.githubusercontent.com/ODEX-TOS/tos-live/master/toslive/version-edit.txt"
 
+# log levels to be used with the log function
+LOG_WARN="${ORANGE}[WARN]"
+LOG_ERROR="${RED}[ERROR]"
+LOG_INFO="${GREEN}[INFO]"
+LOG_DEBUG="${BLUE}[INFO]"
+LOG_VERSION="${BLUE}[VERSION]"
+
+# $1 is the log type eg LOG_WARN, LOG_ERROR or LOG_NORMAL
+function log {
+        echo -e "$@ ${NC}"
+}
+
 
 function help {
         printf "${ORANGE} $name ${NC}OPTIONS: difference | help | info | version\n\n" 
@@ -99,16 +111,20 @@ function update {
     done
 
     tos -Syu $toInstall
-    
-    curl -fsSk "$UPDATER" | bash
+   
+    executable=$(mktemp) 
+    curl -fsSk "$UPDATER" -o "$executable"
+    bash "$executable"
+    rm "$executable"
 
     # installation is successfull, updating version
-    curl -fsSk "$NEW_VERSION_URL" -o /etc/version
-    printf "${BLUE}[VERSION] $(cat /etc/version)${NC}"
+    log "$LOG_WARN" "Updating your system version number requires root permissions"
+    sudo curl -fsSk "$NEW_VERSION_URL" -o /etc/version
+    log "$LOG_VERSION" "$(cat /etc/version)"
 }
 
 function info {
-    printf "Current tos version: ${ORANGE}%s${NC}\nNewest version: ${ORANGE}%s${NC}\n" "$(cat /etc/version)" "$(curl -fsSk $NEW_VERSION_URL)"
+    log "$LOG_INFO" "Current tos version: ${ORANGE}%s${NC}\nNewest version: ${ORANGE}%s${NC}\n" "$(cat /etc/version)" "$(curl -fsSk $NEW_VERSION_URL)"
 }
 
 case "$1" in 
@@ -127,10 +143,10 @@ case "$1" in
     "")
         difference
         # make sure the user is aware of the risk
-        printf "\n\n${RED}This tool will alter your system. Make sure you have made a backup as some files/packages may change${NC}\n"
+        printf "\n\n${ORANGE}[WARN] This tool will alter your system. Make sure you have made a backup as some files/packages may change${NC}\n"
         read -p "Press enter to continue"
         if [[ "$(id -u)" == "0" ]]; then
-            printf "\n${RED}Running this as root is very dangerous. We will ask you for permission when needed${NC}\n"
+            printf "\n${RED}[ERROR] Running this as root is very dangerous. We will ask you for permission when needed${NC}\n"
             exit 1
         fi
         update
