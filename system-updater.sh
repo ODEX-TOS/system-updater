@@ -104,6 +104,7 @@ function update {
 
     # installation is successfull, updating version
     curl -fsSk "$NEW_VERSION_URL" -o /etc/version
+    printf "${BLUE}[VERSION] $(cat /etc/version)${NC}"
 }
 
 function info {

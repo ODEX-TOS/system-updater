@@ -45,4 +45,64 @@ printf "\n${RED}STARTING FILE ADJUSTMENT${NC}\n"
 
 # Important to know: This file will be ran as the user not as root
 
-# BEGIN COMATIBILITY HERE
+# URLS
+USERCHROME="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/tos-firefox/chrome/userChrome.css"
+
+# log levels to be used with the log function
+LOG_WARN="${ORANGE}[WARN]"
+LOG_ERROR="${RED}[ERROR]"
+LOG_INFO="${GREEN}[INFO]"
+LOG_DEBUG="${BLUE}[INFO]"
+
+ALTER="$1" # if this is set we don't alter the state of our machine
+
+# $1 is the log type eg LOG_WARN, LOG_ERROR or LOG_NORMAL
+function log {
+        echo -e "$@ ${NC}"
+}
+
+# BEGIN COMPATIBILITY HERE
+
+# modify all userChrome file to match the remote url
+function alter-firefox-user-chrome {
+    log "$LOG_INFO" "Downloading new userChrome.css file"
+    data=$(curl -fSsk "$USERCHROME")
+    log "$LOG_INFO" "Verifying the data"
+    if [[ "$data" != "" ]]; then
+            log "$LOG_INFO" "Downloaded file is valid. Applying patches"
+        for chrome in $HOME/.mozilla/firefox/*/chrome/userChrome.css; do
+            log "$LOG_INFO" "Altering $chrome"
+            if [[ "$ALTER" == "" ]]; then
+                    echo "$data" > "$chrome"
+            fi 
+
+        done
+    else
+            log "$LOG_ERROR" "Downloading userchrome.css failed from $USERCHROME"
+    fi
+}
+
+# function used to alter the state of firefox
+function prepare-firefox {
+    log "$LOG_INFO" "Configuring firefox"
+    log "$LOG_WARN" "We will be altering userChrome.css"
+    read -p "Do you want to update firefox to the latest to version (y/N)" answer
+    if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
+            log "$LOG_INFO" "Finding all userChrome.css files to update"
+            alter-firefox-user-chrome
+    else
+            log "$LOG_INFO" "Not altering firefox"
+    fi
+}
+
+
+
+function run {
+        prepare-firefox # convert your firefox installation
+}
+
+run
+
+
+
+
