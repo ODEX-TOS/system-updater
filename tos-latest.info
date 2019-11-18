@@ -11,7 +11,9 @@ TOS version 0.5 Beta
 - Arandr can now be opened using the display key
 - AUR packages are now also included in the updater widget
 - Firefox received a facelift
-
+- Scrolling the action bar using 2 finger/mouse wheel is now possible
+- You can now change the default icons in a config file
+- You can now change the default colors in a config file
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
@@ -22,3 +24,4 @@ TOS version 0.5 Beta
 - Pacman-contrib is now included in the software
 - Battery widget now includes the correct icons
 - Firefox UI no longer interferes with badly written websites using the 16:9 aspect ratio
+- Fixed scrolling bug when leaving the widget while holding LMB pressed
