@@ -14,6 +14,7 @@ TOS version 0.5 Beta
 - Scrolling the action bar using 2 finger/mouse wheel is now possible
 - You can now change the default icons in a config file
 - You can now change the default colors in a config file
+- The active tab color in firefox now matches your theme color
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
