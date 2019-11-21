@@ -27,3 +27,4 @@ TOS version 0.5 Beta
 - Battery widget now includes the correct icons
 - Firefox UI no longer interferes with badly written websites using the 16:9 aspect ratio
 - Fixed scrolling bug when leaving the widget while holding LMB pressed
+- Color theme is now correctly applied when moving the windows/focusing
