@@ -124,9 +124,20 @@ function add-config {
     fi
 }
 
+function group-add {
+    log "$LOG_INFO" "Adding user to the correct groups"
+    read -p "Do you want use to add $USER to the input group? (y/N)" answer
+    if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
+        log "$LOG_WARN" "Using elevated permissions to alter input group"
+        sudo gpasswd -a "$USER" input
+        log "$LOG_INFO" "Added $USER to input group"
+    fi 
+}
+
 function run {
         prepare-firefox # convert your firefox installation
         add-config # add missing configuration files
+        group-add
 }
 
 run
