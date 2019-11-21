@@ -131,6 +131,7 @@ function group-add {
         log "$LOG_WARN" "Using elevated permissions to alter input group"
         sudo gpasswd -a "$USER" input
         log "$LOG_INFO" "Added $USER to input group"
+        log "$LOG_INFO" "Logout to make these changes take effect"
     fi 
 }
 
