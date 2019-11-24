@@ -49,6 +49,7 @@ printf "\n${RED}STARTING FILE ADJUSTMENT${NC}\n"
 USERCHROME="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/tos-firefox/chrome/userChrome.css"
 COLOR_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/colors.conf"
 ICONS_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/icons.conf"
+TAGS_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/tags.conf"
 
 # log levels to be used with the log function
 LOG_WARN="${ORANGE}[WARN]"
@@ -102,6 +103,7 @@ function add-config {
     log "$LOG_INFO" "Detecting missing config files"
     COLORS_CONF="$HOME/.config/tos/colors.conf"
     ICONS_CONF="$HOME/.config/tos/icons.conf"
+    TAGS_CONF="$HOME/.config/tos/tags.conf"
     if [[ ! -f "$COLORS_CONF" ]]; then
         log "$LOG_INFO" "$COLORS_CONF is missing. It is used to alter the theme colors of your system"
         read -p "Do you want us to add colors.conf to your system (y/N)" answer
@@ -112,6 +114,7 @@ function add-config {
                 fi
         fi
     fi
+
     if [[ ! -f "$ICONS_CONF" ]]; then
         log "$LOG_INFO" "$ICONS_CONF is missing. It is used to alter the icons used by the system"
         read -p "Do you want us to add icons.conf to your system (y/N)" answer
@@ -119,6 +122,17 @@ function add-config {
                 log "$LOG_INFO" "Downloading latest version of icons.conf"
                 if [[ "$ALTER" == "" ]]; then
                         curl -fSsk "$ICONS_CONF_URL" -o "$ICONS_CONF"
+                fi
+        fi
+    fi
+
+    if [[ ! -f "$TAGS_CONF" ]]; then
+        log "$LOG_INFO" "$TAGS_CONF is missing. It is used to describe where new applications launch, Eg in which workspace"
+        read -p "Do you want us to add tags.conf to your system (y/N)" answer
+        if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
+                log "$LOG_INFO" "Downloading latest version of icons.conf"
+                if [[ "$ALTER" == "" ]]; then
+                        curl -fSsk "$TAGS_CONF_URL" -o "$TAGS_CONF"
                 fi
         fi
     fi
