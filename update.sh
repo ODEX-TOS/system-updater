@@ -149,10 +149,25 @@ function group-add {
     fi 
 }
 
+function setup-greeter {
+    log "$LOG_INFO" "Setting up the new greeter"
+    read -p "Would you like us to change the greeter to sddm (y/N)" answer
+    if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
+        log "$LOG_WARN" "Changing the greeter to sddm"
+        if [[ "$ALTER" == "" ]]; then
+            sudo systemctl disable lightdm # disable the old greeter
+            sudo systemctl enable sddm # enabeling the new greeter
+        fi
+        log "$LOG_WARN" "If your greeter is broken you need to do the following in a terminal"
+        log "$LOG_WARN" "sudo systemctl disable sddm && sudo systemctl enable lightdm"
+    fi
+}
+
 function run {
         prepare-firefox # convert your firefox installation
         add-config # add missing configuration files
         group-add
+        setup-greeter
 }
 
 run
