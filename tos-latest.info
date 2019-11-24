@@ -28,3 +28,5 @@ TOS version 0.5 Beta
 - Firefox UI no longer interferes with badly written websites using the 16:9 aspect ratio
 - Fixed scrolling bug when leaving the widget while holding LMB pressed
 - Color theme is now correctly applied when moving the windows/focusing
+- When no battery is detected we no longer spit out stack traces to the log files
+- When resizing clients you can now also make them smaller
