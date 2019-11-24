@@ -94,5 +94,6 @@ linux-firmware
 libarchive
 nemo
 gnome-system-monitor
+system-updater
 pacman-contrib
 libinput-gestures-tos
