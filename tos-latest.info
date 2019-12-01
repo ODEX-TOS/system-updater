@@ -16,6 +16,8 @@ TOS version 0.5 Beta
 - You can now change the default colors in a config file
 - The active tab color in firefox now matches your theme color
 - Added gestures for the touchpad so you can move workspaces using that
+- Added a notification list widget where you can see past notifications
+- Added a music player widget where you can skip, play and pause music
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
