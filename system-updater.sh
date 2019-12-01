@@ -70,16 +70,15 @@ function difference {
     # get the raw datastream
     data=$(curl -fsSk "$LATEST_INFO_URL")
 
-    # parse the data
-
-    title=$(printf "$data" | grep -A 1 "\[Title\]" | sed 's:\[Title\]::g')
-    features=$(printf "$data" | grep -A 1000 "\[New Features\]" | sed 's:\[New Features\]::g' | awk '{if($0 ~ /\[.*\]/){newfield=1;} if (!newfield){print $0}}')
-    bugfixes=$(printf "$data" | grep -A 1000 "\[Bug fixes\]" | sed 's:\[Bug fixes\]::g' | awk '{if($0 ~ /\[.*\]/){newfield=1;} if (!newfield){print $0}}')
-
-    # print the converted data
-    printf "${ORANGE}%s${NC}\n\n" "$title"
-    printf "${ORANGE}Features:${NC}%s\n\n" "$features"
-    printf "${ORANGE}Bug Fixes:${NC}%s\n" "$bugfixes"
+    # find all sections 
+    OLDIFS="$IFS"
+    IFS=$'\n' # bash specific
+    for submenu in $(printf "$data" | grep '\[.*\]'); do
+        escaped_submenu=$(printf "$submenu" | sed -e 's:\[:\\[:g' -e 's:\]:\\]:g')
+        section=$(printf "$data" | grep -A 1000 "$escaped_submenu" | sed "s:$escaped_submenu::g" | awk '{if($0 ~ /\[.*\]/){newfield=1;} if (!newfield){print $0}}')
+        printf "${ORANGE}%s${NC}%s\n\n" "$submenu" "$section"
+    done
+    IFS="$OLDIFS"
 }
 
 # update your system to the new tos version
@@ -124,7 +123,8 @@ function update {
 }
 
 function info {
-    log "$LOG_INFO" "Current tos version: ${ORANGE}%s${NC}\nNewest version: ${ORANGE}%s${NC}\n" "$(cat /etc/version)" "$(curl -fsSk $NEW_VERSION_URL)"
+    log "$LOG_INFO" "Current tos version: ${ORANGE}$(cat /etc/version)${NC}"
+    log "$LOG_INFO" "Newest version: ${ORANGE}$(curl -fsSk $NEW_VERSION_URL)${NC}"
 }
 
 case "$1" in 
