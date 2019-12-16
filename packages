@@ -98,3 +98,5 @@ system-updater
 pacman-contrib
 libinput-gestures-tos
 sddm-theme-tos-git
+amd-ucode
+intel-ucode
