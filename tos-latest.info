@@ -18,6 +18,7 @@ TOS version 0.5 Beta
 - Added gestures for the touchpad so you can move workspaces using that
 - Added a notification list widget where you can see past notifications
 - Added a music player widget where you can skip, play and pause music
+- Added support for more sound cards
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery

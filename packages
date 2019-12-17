@@ -99,3 +99,6 @@ libinput-gestures-tos
 sddm-theme-tos-git
 amd-ucode
 intel-ucode
+alsa-lib
+alsa-plugins
+alsa-utils
