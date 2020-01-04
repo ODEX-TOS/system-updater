@@ -163,6 +163,19 @@ function setup-greeter {
     fi
 }
 
+function tos-completion {
+    log "$LOG_INFO" "Downloading latest tos completion script"
+    if [[ -d "~/.oh-my-zsh/custom/plugins/zsh-completions/src/" ]]; then
+        if [[ "$ALTER" == "" ]]; then
+            wget -O "~/.oh-my-zsh/custom/plugins/zsh-completions/src/_tos" https://raw.githubusercontent.com/ODEX-TOS/tools/master/_tos
+        fi
+    else
+        log "$LOG_ERROR" "Cannot add autocompletion for tos. Files are missing"
+        log "$LOG_ERROR" "If you see this message don't worry your system should still work"
+        log "$LOG_ERROR" "However there will be no shell autocompletion support for you"
+    fi
+}
+
 function run {
         prepare-firefox # convert your firefox installation
         add-config # add missing configuration files
