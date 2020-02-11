@@ -1,14 +1,11 @@
 awesome-tos
 light
 archlinux-keyring
-i3lock-next-git
 st-tos
 skel
 bluez
 compton
-dunst
 feh
-polybar-git
 python-pip
 rofi
 zathura
@@ -22,9 +19,7 @@ breeze-gtk
 python-pywal
 xf86-input-mouse
 xf86-video-intel
-visual-studio-code-insiders
 pavucontrol
-firefox-developer-edition
 yay
 base-devel
 glances
@@ -92,7 +87,6 @@ maim
 linux-firmware
 libarchive
 nemo
-gnome-system-monitor
 system-updater
 pacman-contrib
 libinput-gestures-tos
