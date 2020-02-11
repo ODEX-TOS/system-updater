@@ -50,6 +50,10 @@ USERCHROME="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/tos-f
 COLOR_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/colors.conf"
 ICONS_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/icons.conf"
 TAGS_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/tags.conf"
+TOS_COMPLETION="https://raw.githubusercontent.com/ODEX-TOS/tools/master/_tos"
+
+# PATHS
+SYSTEMD_DM_PATH="/etc/systemd/system/display-manager.service"
 
 # log levels to be used with the log function
 LOG_WARN="${ORANGE}[WARN]"
@@ -139,35 +143,43 @@ function add-config {
 }
 
 function group-add {
-    log "$LOG_INFO" "Adding user to the correct groups"
-    read -p "Do you want use to add $USER to the input group? (y/N)" answer
-    if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
-        log "$LOG_WARN" "Using elevated permissions to alter input group"
-        sudo gpasswd -a "$USER" input
-        log "$LOG_INFO" "Added $USER to input group"
-        log "$LOG_INFO" "Logout to make these changes take effect"
-    fi 
+    if ! groups | grep -q "input"; then
+        log "$LOG_INFO" "Adding user to the correct groups"
+        read -p "Do you want use to add $USER to the input group? (y/N)" answer
+        if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
+            log "$LOG_WARN" "Using elevated permissions to alter input group"
+            sudo gpasswd -a "$USER" input
+            log "$LOG_INFO" "Added $USER to input group"
+            log "$LOG_INFO" "Logout to make these changes take effect"
+        fi 
+    else
+        log "$LOG_INFO" "User groups seems correct"
+    fi
 }
 
 function setup-greeter {
-    log "$LOG_INFO" "Setting up the new greeter"
-    read -p "Would you like us to change the greeter to sddm (y/N)" answer
-    if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
-        log "$LOG_WARN" "Changing the greeter to sddm"
-        if [[ "$ALTER" == "" ]]; then
-            sudo systemctl disable lightdm # disable the old greeter
-            sudo systemctl enable sddm # enabeling the new greeter
+    if ! file "$SYSTEMD_DM_PATH" | grep -q "sddm.service"; then
+        log "$LOG_INFO" "Setting up the new greeter"
+        read -p "Would you like us to change the greeter to sddm (y/N)" answer
+        if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
+            log "$LOG_WARN" "Changing the greeter to sddm"
+            if [[ "$ALTER" == "" ]]; then
+                sudo systemctl disable lightdm # disable the old greeter
+                sudo systemctl enable sddm # enabeling the new greeter
+            fi
+            log "$LOG_WARN" "If your greeter is broken you need to do the following in a terminal"
+            log "$LOG_WARN" "sudo systemctl disable sddm && sudo systemctl enable lightdm"
         fi
-        log "$LOG_WARN" "If your greeter is broken you need to do the following in a terminal"
-        log "$LOG_WARN" "sudo systemctl disable sddm && sudo systemctl enable lightdm"
+    else
+        log "$LOG_INFO" "Official Display Manager SDDM is being used"
     fi
 }
 
 function tos-completion {
     log "$LOG_INFO" "Downloading latest tos completion script"
-    if [[ -d "~/.oh-my-zsh/custom/plugins/zsh-completions/src/" ]]; then
+    if [[ -d "$HOME/.oh-my-zsh/custom/plugins/zsh-completions/src/" ]]; then
         if [[ "$ALTER" == "" ]]; then
-            wget -O "~/.oh-my-zsh/custom/plugins/zsh-completions/src/_tos" https://raw.githubusercontent.com/ODEX-TOS/tools/master/_tos
+            curl -fSsk "$TOS_COMPLETION" > "$HOME/.oh-my-zsh/custom/plugins/zsh-completions/src/_tos"
         fi
     else
         log "$LOG_ERROR" "Cannot add autocompletion for tos. Files are missing"
