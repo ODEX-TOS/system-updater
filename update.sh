@@ -181,6 +181,7 @@ function run {
         add-config # add missing configuration files
         group-add
         setup-greeter
+        tos-completion
 }
 
 run
