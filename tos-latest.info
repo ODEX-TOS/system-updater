@@ -36,3 +36,4 @@ TOS version 0.5 Beta
 - When resizing clients you can now also make them smaller
 - You can now close centers using the Escape key
 - autocompletion for tos theme deletion now shows correct content 
+- Weather widget now correctly displays the current weather icon
