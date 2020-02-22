@@ -50,6 +50,7 @@ USERCHROME="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/tos-f
 COLOR_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/colors.conf"
 ICONS_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/icons.conf"
 TAGS_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/tags.conf"
+FLOATING_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/floating.conf"
 TOS_COMPLETION="https://raw.githubusercontent.com/ODEX-TOS/tools/master/_tos"
 
 # PATHS
@@ -108,6 +109,7 @@ function add-config {
     COLORS_CONF="$HOME/.config/tos/colors.conf"
     ICONS_CONF="$HOME/.config/tos/icons.conf"
     TAGS_CONF="$HOME/.config/tos/tags.conf"
+    FLOATING_CONF="$HOME/.config/tos/floating.conf"
     if [[ ! -f "$COLORS_CONF" ]]; then
         log "$LOG_INFO" "$COLORS_CONF is missing. It is used to alter the theme colors of your system"
         read -p "Do you want us to add colors.conf to your system (y/N)" answer
@@ -134,9 +136,20 @@ function add-config {
         log "$LOG_INFO" "$TAGS_CONF is missing. It is used to describe where new applications launch, Eg in which workspace"
         read -p "Do you want us to add tags.conf to your system (y/N)" answer
         if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
-                log "$LOG_INFO" "Downloading latest version of icons.conf"
+                log "$LOG_INFO" "Downloading latest version of tags.conf"
                 if [[ "$ALTER" == "" ]]; then
                         curl -fSsk "$TAGS_CONF_URL" -o "$TAGS_CONF"
+                fi
+        fi
+    fi
+
+    if [[ ! -f "$FLOATING_CONF" ]]; then
+        log "$LOG_INFO" "$FLOATING_CONF is missing. It is used to describe which applications are draggable (not tiling)"
+        read -p "Do you want us to add floating.conf to your system (y/N)" answer
+        if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
+                log "$LOG_INFO" "Downloading latest version of floating.conf"
+                if [[ "$ALTER" == "" ]]; then
+                        curl -fSsk "$FLOATING_CONF_URL" -o "$FLOATING_CONF"
                 fi
         fi
     fi
