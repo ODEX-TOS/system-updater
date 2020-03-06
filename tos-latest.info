@@ -22,6 +22,7 @@ TOS version 0.5 Beta
 - Added a floating mode layout to the window manager
 - You can now specify which application start in floating mode
 - Added Sysrq trigger options
+- Added config option where you can select the type of layout in a specific tag
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
