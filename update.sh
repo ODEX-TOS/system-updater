@@ -57,16 +57,16 @@ TOS_COMPLETION="https://raw.githubusercontent.com/ODEX-TOS/tools/master/_tos"
 SYSTEMD_DM_PATH="/etc/systemd/system/display-manager.service"
 
 # log levels to be used with the log function
-LOG_WARN="${ORANGE}[WARN]"
-LOG_ERROR="${RED}[ERROR]"
-LOG_INFO="${GREEN}[INFO]"
-LOG_DEBUG="${BLUE}[DEBUG]"
+LOG_WARN="${ORANGE}[WARN]${NC}"
+LOG_ERROR="${RED}[ERROR]${NC}"
+LOG_INFO="${GREEN}[INFO]${NC}"
+LOG_DEBUG="${BLUE}[DEBUG]${NC}"
 
 ALTER="$1" # if this is set we don't alter the state of our machine
 
 # $1 is the log type eg LOG_WARN, LOG_ERROR or LOG_NORMAL
 function log {
-        echo -e "$@ ${NC}"
+        echo -e "$@"
 }
 
 # BEGIN COMPATIBILITY HERE
@@ -82,6 +82,7 @@ function alter-firefox-user-chrome {
             log "$LOG_INFO" "Altering $chrome"
             if [[ "$ALTER" == "" ]]; then
                     echo "$data" > "$chrome"
+                    log "$LOG_INFO" "populated $chrome with correct data"
             fi 
 
         done
@@ -117,6 +118,7 @@ function add-config {
                 log "$LOG_INFO" "Downloading latest version of colors.conf"
                 if [[ "$ALTER" == "" ]]; then
                         curl -fSsk "$COLOR_CONF_URL" -o "$COLORS_CONF"
+                        log "$LOG_INFO" "$COLORS_CONF has been installed"
                 fi
         fi
     fi
@@ -128,6 +130,7 @@ function add-config {
                 log "$LOG_INFO" "Downloading latest version of icons.conf"
                 if [[ "$ALTER" == "" ]]; then
                         curl -fSsk "$ICONS_CONF_URL" -o "$ICONS_CONF"
+                        log "$LOG_INFO" "$ICONS_CONF has been installed"
                 fi
         fi
     fi
@@ -139,6 +142,7 @@ function add-config {
                 log "$LOG_INFO" "Downloading latest version of tags.conf"
                 if [[ "$ALTER" == "" ]]; then
                         curl -fSsk "$TAGS_CONF_URL" -o "$TAGS_CONF"
+                        log "$LOG_INFO" "$TAGS_CONF has been installed"
                 fi
         fi
     fi
@@ -150,6 +154,7 @@ function add-config {
                 log "$LOG_INFO" "Downloading latest version of floating.conf"
                 if [[ "$ALTER" == "" ]]; then
                         curl -fSsk "$FLOATING_CONF_URL" -o "$FLOATING_CONF"
+                        log "$LOG_INFO" "$FLOATING_CONF has been installed"
                 fi
         fi
     fi
@@ -171,6 +176,7 @@ function group-add {
 }
 
 function setup-greeter {
+    log "$LOG_INFO" "Checking current active greeter"
     if ! file "$SYSTEMD_DM_PATH" | grep -q "sddm.service"; then
         log "$LOG_INFO" "Setting up the new greeter"
         read -p "Would you like us to change the greeter to sddm (y/N)" answer
@@ -189,10 +195,12 @@ function setup-greeter {
 }
 
 function tos-completion {
-    log "$LOG_INFO" "Downloading latest tos completion script"
+    log "$LOG_INFO" "Preparing TOS completion scripts"
     if [[ -d "$HOME/.oh-my-zsh/custom/plugins/zsh-completions/src/" ]]; then
         if [[ "$ALTER" == "" ]]; then
+            log "$LOG_INFO" "Downloading latest tos completion script"
             curl -fSsk "$TOS_COMPLETION" > "$HOME/.oh-my-zsh/custom/plugins/zsh-completions/src/_tos"
+            log "$LOG_INFO" "TOS completion scripts have been installed"
         fi
     else
         log "$LOG_ERROR" "Cannot add autocompletion for tos. Files are missing"
@@ -201,13 +209,32 @@ function tos-completion {
     fi
 }
 
+# enable sysrq triggers
+function sysrq-trigger {
+    log "$LOG_INFO" "Enabling sysrq triggers for the curent session"
+    if [[ "$ALTER" == "" ]]; then
+        echo "511" | sudo tee /proc/sys/kernel/sysrq
+    fi
+    log "$LOG_INFO" "Sysrq trigger has been configured for this session"
+    log "$LOG_INFO" "Setting up persistent sysrq triggers between reboots"
+    if [[ "$ALTER" == "" ]]; then
+        if [[ ! -d "/etc/sysctl.d" ]]; then
+            sudo mkdir -p /etc/sysctl.d
+        fi
+        echo "kernel.sysrq = 511" | sudo tee /etc/sysctl.d/99-sysctl.conf
+        log "$LOG_INFO" "Sysrq setting have been globally applied"
+    fi
+
+}
+
 function run {
         prepare-firefox # convert your firefox installation
         add-config # add missing configuration files
         group-add
         setup-greeter
         tos-completion
-}
+        sysrq-trigger
+}   
 
 run
 

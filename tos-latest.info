@@ -21,6 +21,7 @@ TOS version 0.5 Beta
 - Added support for more sound cards
 - Added a floating mode layout to the window manager
 - You can now specify which application start in floating mode
+- Added Sysrq trigger options
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
