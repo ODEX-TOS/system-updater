@@ -23,6 +23,11 @@ TOS version 0.5 Beta
 - You can now specify which application start in floating mode
 - Added Sysrq trigger options
 - Added config option where you can select the type of layout in a specific tag
+- Added a screen recorder
+- Battery widget overhaul
+- Network load is now present in the action center
+- Updated trash widget with more information on hover
+- Calculator widget now supports key events
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
