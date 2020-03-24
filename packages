@@ -14,8 +14,7 @@ playerctl
 nm-connection-editor
 xdotool
 xcursor-human
-mcmojave-circle-icon-theme-git
-breeze-gtk
+papirus-icon-theme
 python-pywal
 xf86-input-mouse
 xf86-video-intel
