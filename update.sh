@@ -211,7 +211,7 @@ function tos-completion {
 
 # enable sysrq triggers
 function sysrq-trigger {
-    log "$LOG_INFO" "Enabling sysrq triggers for the curent session"
+    log "$LOG_INFO" "Enabling sysrq triggers for the current session"
     if [[ "$ALTER" == "" ]]; then
         echo "511" | sudo tee /proc/sys/kernel/sysrq
     fi
@@ -227,12 +227,30 @@ function sysrq-trigger {
 
 }
 
+# changed default icon theme to papirus instead of mcmojave
+function icon-theme {
+    log "$LOG_INFO" "Detecting gtk 3.0 icon theme"
+    theme="$(grep gtk-icon-theme-name $HOME/.config/gtk-3.0/settings.ini | awk -F= '{printf $2}')"
+    if [[ "$theme" == *"mojave-circle"* ]]; then
+        log "$LOG_WARN" "You are using an old mcmojave theme. It is no longer supported"
+        read -p "Would you like to change to the papirus theme? (y/N)" answer
+        if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
+            log "$LOG_INFO" "Changing the theme to papirus-dark"
+            if [[ "$ALTER" == "" ]]; then
+                sed -i 's:gtk-icon-theme-name=.*$:gtk-icon-theme-name=Papirus-Dark:g' "$HOME/.config/gtk-3.0/settings.ini"
+                log "$LOG_INFO" "Updated icon theme. Logout to take effect"
+            fi
+        fi
+    fi
+}
+
 function run {
         prepare-firefox # convert your firefox installation
         add-config # add missing configuration files
         group-add
         setup-greeter
         tos-completion
+        icon-theme
         sysrq-trigger
 }   
 
