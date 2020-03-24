@@ -51,13 +51,14 @@ function log {
 
 
 function help {
-        printf "${ORANGE} $name ${NC}OPTIONS: difference | help | info | version\n\n" 
+        printf "${ORANGE} $name ${NC}OPTIONS: difference | help | info | inspect | version\n\n" 
         printf "${ORANGE}USAGE:${NC}\n"
         printf "$name  \t\t\t Update your current system\n"
-        printf "$name  --difference \t\t Show what is new in the latest tos version\n"
-        printf "$name  --help \t\t\t Show this help message\n"
-        printf "$name  --info \t\t\t Show your current tos version\n"
-        printf "$name  --version \t\t Show information about this tool\n"
+        printf "$name  --difference (-d)\t\t Show what is new in the latest tos version\n"
+        printf "$name  --help (-h)\t\t\t Show this help message\n"
+        printf "$name  --info (-i)\t\t\t Show your current tos version\n"
+        printf "$name  --inspect (-I)\t\t\t Inspect the updater script to make sure everything is safe\n"
+        printf "$name  --version (-v)\t\t Show information about this tool\n"
 }
 
 # print the current version of ths software
@@ -122,6 +123,12 @@ function update {
     log "$LOG_VERSION" "$(cat /etc/version)"
 }
 
+function inspect {
+    log "$LOG_INFO" "Downloading latest update script"
+    curl -s "$UPDATER"
+    log "$LOG_INFO" "Check the above script to make sure everything seems normal"
+}
+
 function info {
     log "$LOG_INFO" "Current tos version: ${ORANGE}$(cat /etc/version)${NC}"
     log "$LOG_INFO" "Newest version: ${ORANGE}$(curl -fsSk $NEW_VERSION_URL)${NC}"
@@ -136,6 +143,9 @@ case "$1" in
     ;;
     "-i"|"--info")
         info
+    ;;
+    "-I"|"--inspect")
+        inspect
     ;;
     "-h"|"--help")
         help
