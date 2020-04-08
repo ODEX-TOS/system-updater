@@ -51,6 +51,7 @@ COLOR_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/c
 ICONS_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/icons.conf"
 TAGS_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/tags.conf"
 FLOATING_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/floating.conf"
+KEYS_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/keys.conf"
 TOS_COMPLETION="https://raw.githubusercontent.com/ODEX-TOS/tools/master/_tos"
 
 # PATHS
@@ -111,6 +112,7 @@ function add-config {
     ICONS_CONF="$HOME/.config/tos/icons.conf"
     TAGS_CONF="$HOME/.config/tos/tags.conf"
     FLOATING_CONF="$HOME/.config/tos/floating.conf"
+    KEYS_CONF="$HOME/.config/tos/keys.conf"
     if [[ ! -f "$COLORS_CONF" ]]; then
         log "$LOG_INFO" "$COLORS_CONF is missing. It is used to alter the theme colors of your system"
         read -p "Do you want us to add colors.conf to your system (y/N)" answer
@@ -155,6 +157,17 @@ function add-config {
                 if [[ "$ALTER" == "" ]]; then
                         curl -fSsk "$FLOATING_CONF_URL" -o "$FLOATING_CONF"
                         log "$LOG_INFO" "$FLOATING_CONF has been installed"
+                fi
+        fi
+    fi
+    if [[ ! -f "$KEYS_CONF" ]]; then
+        log "$LOG_INFO" "$KEYS_CONF is missing. It is used to describe which the keyboard shortcuts"
+        read -p "Do you want us to add keys.conf to your system (y/N)" answer
+        if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
+                log "$LOG_INFO" "Downloading latest version of keys.conf"
+                if [[ "$ALTER" == "" ]]; then
+                        curl -fSsk "$KEYS_CONF_URL" -o "$KEYS_CONF"
+                        log "$LOG_INFO" "$KEYS_CONF has been installed"
                 fi
         fi
     fi
