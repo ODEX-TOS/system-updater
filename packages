@@ -95,3 +95,4 @@ intel-ucode
 alsa-lib
 alsa-plugins
 alsa-utils
+kernel-modules-hook

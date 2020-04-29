@@ -28,6 +28,7 @@ TOS version 0.5 Beta
 - Network load is now present in the action center
 - Updated trash widget with more information on hover
 - Calculator widget now supports key events
+- Install and prepare the kernel modules hooks to work with old kernels
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery

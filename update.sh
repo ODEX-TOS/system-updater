@@ -257,6 +257,20 @@ function icon-theme {
     fi
 }
 
+function kernel-hook {
+    log "$LOG_INFO" "Checking kernel module hook daemon"
+    if [[ -f "/usr/lib/systemd/system/linux-modules-cleanup.service" ]]; then
+            log "$LOG_INFO" "Kernel hook service found!"
+            log "$LOG_INFO" "Setting hook as enabled"
+            if [[ "$ALTER" == "" ]]; then
+                    sudo systemctl daemon-reload
+                    sudo systemctl enable linux-modules-cleanup
+            fi
+    else
+            log "$LOG_WARN" "kernel module hook not found. We recommend you to install kernel-modules-hook from the tos repository (tos -Syu kernel-modules-hook)"
+    fi
+}
+
 function run {
         prepare-firefox # convert your firefox installation
         add-config # add missing configuration files
@@ -265,6 +279,7 @@ function run {
         tos-completion
         icon-theme
         sysrq-trigger
+        kernel-hook
 }   
 
 run
