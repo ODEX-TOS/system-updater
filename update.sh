@@ -271,6 +271,21 @@ function kernel-hook {
     fi
 }
 
+function services {
+    log "$LOG_INFO" "Checking to see if certain services are working"
+    if lsblk --discard | awk 'NR!=1&&$3!="0B"&&$4!="0B"{print $3, $4}' | grep -qE '[0-9]*[TGMKB]'; then
+        log "$LOG_INFO" "Detected ssd trim capabilities"
+        log "$LOG_INFO" "Enabling ssd trim timer"
+        if [[ "$ALTER" == "" ]]; then 
+            systemctl enable fstrim.timer
+        fi
+    else
+            log "$LOG_WARN" "Your hardware doesn't support trimming"
+            log "$LOG_WARN" "We won't enable the systemctl service"
+            log "$LOG_WARN" "If you do want this capability then we suggest to use an ssd with trim functionality"
+    fi
+}
+
 function run {
         prepare-firefox # convert your firefox installation
         add-config # add missing configuration files
@@ -280,6 +295,7 @@ function run {
         icon-theme
         sysrq-trigger
         kernel-hook
+        services
 }   
 
 run
