@@ -30,7 +30,7 @@ ORANGE='\033[1;33m'
 NC='\033[0m' # No Color
 
 name="system-updater"
-version="v0.1"
+version="v0.2"
 
 LATEST_INFO_URL="https://raw.githubusercontent.com/ODEX-TOS/system-updater/master/tos-latest.info"
 PACKAGES="https://raw.githubusercontent.com/ODEX-TOS/system-updater/master/packages"
@@ -55,10 +55,10 @@ function help {
         printf "${ORANGE} $name ${NC}OPTIONS: difference | help | info | inspect | version\n\n" 
         printf "${ORANGE}USAGE:${NC}\n"
         printf "$name  \t\t\t Update your current system\n"
-        printf "$name  --difference (-d)\t\t Show what is new in the latest tos version\n"
-        printf "$name  --help (-h)\t\t\t Show this help message\n"
-        printf "$name  --info (-i)\t\t\t Show your current tos version\n"
-        printf "$name  --inspect (-I)\t\t\t Inspect the updater script to make sure everything is safe\n"
+        printf "$name  --difference (-d)\t Show what is new in the latest tos version\n"
+        printf "$name  --help (-h)\t\t Show this help message\n"
+        printf "$name  --info (-i)\t\t Show your current tos version\n"
+        printf "$name  --inspect (-I)\t\t Inspect the updater script to make sure everything is safe\n"
         printf "$name  --version (-v)\t\t Show information about this tool\n"
 }
 
@@ -135,9 +135,9 @@ function checkArchConflicts {
 
 function inspect {
     log "$LOG_INFO" "Downloading the package conflict script"
-    read -p ""
     curl -s "$CONFLICT"
-    log "$LOG_INFO" "Check the above script to make sure everything seems normal"
+    log "$LOG_INFO" "Check the above script to make sure everything seems normal. Once verified press enter"
+    read -p ""
     log "$LOG_INFO" "Downloading latest update script"
     curl -s "$UPDATER"
     log "$LOG_INFO" "Check the above script to make sure everything seems normal"
