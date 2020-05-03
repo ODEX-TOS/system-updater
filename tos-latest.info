@@ -29,6 +29,7 @@ TOS version 0.5 Beta
 - Updated trash widget with more information on hover
 - Calculator widget now supports key events
 - Install and prepare the kernel modules hooks to work with old kernels
+- Conflicts with newer versions of packages get automatically resolved
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery

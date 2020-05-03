@@ -35,6 +35,7 @@ version="v0.1"
 LATEST_INFO_URL="https://raw.githubusercontent.com/ODEX-TOS/system-updater/master/tos-latest.info"
 PACKAGES="https://raw.githubusercontent.com/ODEX-TOS/system-updater/master/packages"
 UPDATER="https://raw.githubusercontent.com/ODEX-TOS/system-updater/master/update.sh"
+CONFLICT="https://raw.githubusercontent.com/ODEX-TOS/system-updater/master/conflicts.sh"
 NEW_VERSION_URL="https://raw.githubusercontent.com/ODEX-TOS/tos-live/master/toslive/version-edit.txt"
 
 # log levels to be used with the log function
@@ -110,6 +111,8 @@ function update {
         fi 
     done
 
+    checkArchConflicts
+
     tos -Syu $toInstall
    
     executable=$(mktemp) 
@@ -123,7 +126,18 @@ function update {
     log "$LOG_VERSION" "$(cat /etc/version)"
 }
 
+function checkArchConflicts {
+    executable=$(mktemp)
+    curl -fsSK "$CONFLICT" -o "$executable"
+    bash "$executable"
+    rm "$executable"
+}
+
 function inspect {
+    log "$LOG_INFO" "Downloading the package conflict script"
+    read -p ""
+    curl -s "$CONFLICT"
+    log "$LOG_INFO" "Check the above script to make sure everything seems normal"
     log "$LOG_INFO" "Downloading latest update script"
     curl -s "$UPDATER"
     log "$LOG_INFO" "Check the above script to make sure everything seems normal"
