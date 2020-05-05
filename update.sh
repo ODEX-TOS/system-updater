@@ -286,6 +286,13 @@ function services {
     fi
 }
 
+function etc-issue {
+    log "$LOG_INFO" "Updating /etc/issue"
+    if [[ "$ALTER" == "" ]]; then
+        printf "TOS Linux \\\\r (\\\\l)\n" | sudo tee /etc/issue
+    fi
+}
+
 function run {
         prepare-firefox # convert your firefox installation
         add-config # add missing configuration files
@@ -296,6 +303,7 @@ function run {
         sysrq-trigger
         kernel-hook
         services
+        etc-issue
 }   
 
 run
