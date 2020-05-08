@@ -45,6 +45,11 @@ LOG_INFO="${GREEN}[INFO]"
 LOG_DEBUG="${BLUE}[INFO]"
 LOG_VERSION="${BLUE}[VERSION]"
 
+# cache data
+CACHE_DIR="$HOME/.cache/tos-updater"
+
+[[ -d "$CACHE_DIR" ]] || mkdir -p "$CACHE_DIR"
+
 # $1 is the log type eg LOG_WARN, LOG_ERROR or LOG_NORMAL
 function log {
         echo -e "$@ ${NC}"
@@ -52,14 +57,15 @@ function log {
 
 
 function help {
-        printf "${ORANGE} $name ${NC}OPTIONS: difference | help | info | inspect | version\n\n" 
+        printf "${ORANGE}$name ${NC}OPTIONS: cache | difference | help | info | inspect | version\n\n" 
         printf "${ORANGE}USAGE:${NC}\n"
-        printf "$name  \t\t\t Update your current system\n"
-        printf "$name  --difference (-d)\t Show what is new in the latest tos version\n"
-        printf "$name  --help (-h)\t\t Show this help message\n"
-        printf "$name  --info (-i)\t\t Show your current tos version\n"
-        printf "$name  --inspect (-I)\t\t Inspect the updater script to make sure everything is safe\n"
-        printf "$name  --version (-v)\t\t Show information about this tool\n"
+        printf "\t$name  \t\t\t Update your current system\n"
+        printf "\t$name  --cache (-c)\t\t Clear out the generated cache data (this action cannot be reverted)\n"
+        printf "\t$name  --difference (-d)\t Show what is new in the latest tos version\n"
+        printf "\t$name  --help (-h)\t\t Show this help message\n"
+        printf "\t$name  --info (-i)\t\t Show your current tos version\n"
+        printf "\t$name  --inspect (-I)\t\t Inspect the updater script to make sure everything is safe\n"
+        printf "\t$name  --version (-v)\t\t Show information about this tool\n"
 }
 
 # print the current version of ths software
@@ -77,8 +83,17 @@ function difference {
     IFS=$'\n' # bash specific
     for submenu in $(printf "$data" | grep '\[.*\]'); do
         escaped_submenu=$(printf "$submenu" | sed -e 's:\[:\\[:g' -e 's:\]:\\]:g')
+        # format all data from the entire section
         section=$(printf "$data" | grep -A 1000 "$escaped_submenu" | sed "s:$escaped_submenu::g" | awk '{if($0 ~ /\[.*\]/){newfield=1;} if (!newfield){print $0}}')
+        # filter out all duplicates
+        section=$(( echo "$section"; cat "$CACHE_DIR/$submenu" 2>/dev/null ) | sort | uniq -u)
         printf "${ORANGE}%s${NC}%s\n\n" "$submenu" "$section"
+        [[ -d "/tmp/tos-update/" ]] || mkdir -p "/tmp/tos-update"
+        # save the current state of the update to a tmp file
+        # Once the update is succesfull we can commit the data
+        echo "$section" >>  "/tmp/tos-update/$submenu"
+
+        
     done
     IFS="$OLDIFS"
 }
@@ -120,10 +135,51 @@ function update {
     bash "$executable"
     rm "$executable"
 
+    commit
+
     # installation is successfull, updating version
     log "$LOG_WARN" "Updating your system version number requires root permissions"
     sudo curl -fsS "$NEW_VERSION_URL" -o /etc/version
     log "$LOG_VERSION" "$(cat /etc/version)"
+}
+
+function commit {
+    # commiting the /tmp/tos-updater/* transactions
+    log "$LOG_INFO" "Commiting system update information"
+    OLDIFS="$IFS"
+    IFS=$'\n' # bash specific
+    for file in $(find /tmp/tos-update -type f); do
+        name=$(basename "$file")
+        # title should not get filtered
+        [[ "$file" != "[Title]" ]] && cat "$file" >> "$CACHE_DIR/$name"
+    done
+    clear-tmp
+    IFS="$OLDIFS"
+    log "$LOG_INFO" "System update information succesfully logged to $CACHE_DIR"
+}
+
+function clear-tmp {
+    [[ -d "/tmp/tos-update" ]] && rm -rf "/tmp/tos-update"
+}
+
+# interactivally clearing the cache
+function clear-cache {
+    CACHE_SIZE=$(du -smh "$CACHE_DIR" | cut -f1)
+    TMP_SIZE=$(( du -smh "/tmp/tos-update" 2>/dev/null || echo "0B" ) | cut -f1 )
+
+    log "$LOG_WARN" "Clearing out the cache ($CACHE_SIZE) and tmp files ($TMP_SIZE)"
+    if [[ "$1" != "" ]]; then
+        clear="Yes"
+    else
+        log "$LOG_WARN" "This action cannot be reverted are you sure (y/N)"
+        read clear
+    fi
+    case "$clear" in
+        "y"|"Y"|"yes" | "Yes")
+            clear-tmp
+            [[ -d "$CACHE_DIR" ]] && rm -rf "$CACHE_DIR"
+        ;;
+    esac
 }
 
 function checkArchConflicts {
@@ -154,12 +210,16 @@ case "$1" in
     ;;
     "-d"|"--difference")
         difference
+        clear-tmp
     ;;
     "-i"|"--info")
         info
     ;;
     "-I"|"--inspect")
         inspect
+    ;;
+    "-c"|"--cache")
+        clear-cache "$2"
     ;;
     "-h"|"--help")
         help
