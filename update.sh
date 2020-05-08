@@ -226,7 +226,7 @@ function tos-completion {
 function sysrq-trigger {
     log "$LOG_INFO" "Enabling sysrq triggers for the current session"
     if [[ "$ALTER" == "" ]]; then
-        echo "511" | sudo tee /proc/sys/kernel/sysrq 1>/dev/null
+        [[ "$(cat /proc/sys/kernel/sysrq 2>/dev/null )" == "511" ]] || echo "511" | sudo tee /proc/sys/kernel/sysrq 1>/dev/null
     fi
     log "$LOG_INFO" "Sysrq trigger has been configured for this session"
     log "$LOG_INFO" "Setting up persistent sysrq triggers between reboots"
@@ -234,7 +234,7 @@ function sysrq-trigger {
         if [[ ! -d "/etc/sysctl.d" ]]; then
             sudo mkdir -p /etc/sysctl.d
         fi
-        echo "kernel.sysrq = 511" | sudo tee /etc/sysctl.d/99-sysctl.conf 1>/dev/null
+        [[ "$(cat /etc/sysctl.d/99-sysctl.conf 2>/dev/null )" == "kernel.sysrq = 511" ]] || echo "kernel.sysrq = 511" | sudo tee /etc/sysctl.d/99-sysctl.conf 1>/dev/null
         log "$LOG_INFO" "Sysrq setting have been globally applied"
     fi
 
@@ -290,7 +290,7 @@ function services {
 function etc-issue {
     log "$LOG_INFO" "Updating /etc/issue"
     if [[ "$ALTER" == "" ]]; then
-        printf "TOS Linux \\\\r (\\\\l)\n" | sudo tee /etc/issue 1>/dev/null
+        [[ "$(cat /etc/issue 2>/dev/null )" == "TOS Linux \r (\l)" ]] || printf "TOS Linux \\\\r (\\\\l)\n" | sudo tee /etc/issue 1>/dev/null
     fi
 }
 
