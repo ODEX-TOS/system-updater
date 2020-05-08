@@ -277,7 +277,8 @@ function services {
         log "$LOG_INFO" "Detected ssd trim capabilities"
         log "$LOG_INFO" "Enabling ssd trim timer"
         if [[ "$ALTER" == "" ]]; then 
-            systemctl enable fstrim.timer
+            # only enable the timer if it is disabled
+            systemctl status --no-pager fstrim.timer &>/dev/null || systemctl enable --now fstrim.timer
         fi
     else
             log "$LOG_WARN" "Your hardware doesn't support trimming"
