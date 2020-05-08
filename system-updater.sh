@@ -151,7 +151,7 @@ function commit {
     for file in $(find /tmp/tos-update -type f); do
         name=$(basename "$file")
         # title should not get filtered
-        [[ "$file" != "[Title]" ]] && cat "$file" >> "$CACHE_DIR/$name"
+        [[ "$name" != "[Title]" ]] && cat "$file" >> "$CACHE_DIR/$name"
     done
     clear-tmp
     IFS="$OLDIFS"
