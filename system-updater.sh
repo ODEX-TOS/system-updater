@@ -70,7 +70,7 @@ function version {
 # see what the new updates are
 function difference {
     # get the raw datastream
-    data=$(curl -fsSk "$LATEST_INFO_URL")
+    data=$(curl -fsS "$LATEST_INFO_URL")
 
     # find all sections 
     OLDIFS="$IFS"
@@ -94,7 +94,7 @@ function update {
     fi
     
     # get the packages from the repo
-    data=$(curl -fsSk "$PACKAGES")
+    data=$(curl -fsS "$PACKAGES")
 
     # filter all packages in the blacklist out of all packages
     for item in $blacklist; do
@@ -116,19 +116,19 @@ function update {
     tos -Syu $toInstall
    
     executable=$(mktemp) 
-    curl -fsSk "$UPDATER" -o "$executable"
+    curl -fsS "$UPDATER" -o "$executable"
     bash "$executable"
     rm "$executable"
 
     # installation is successfull, updating version
     log "$LOG_WARN" "Updating your system version number requires root permissions"
-    sudo curl -fsSk "$NEW_VERSION_URL" -o /etc/version
+    sudo curl -fsS "$NEW_VERSION_URL" -o /etc/version
     log "$LOG_VERSION" "$(cat /etc/version)"
 }
 
 function checkArchConflicts {
     executable=$(mktemp)
-    curl -fsSK "$CONFLICT" -o "$executable"
+    curl -fsS "$CONFLICT" -o "$executable"
     bash "$executable"
     rm "$executable"
 }
@@ -145,7 +145,7 @@ function inspect {
 
 function info {
     log "$LOG_INFO" "Current tos version: ${ORANGE}$(cat /etc/version)${NC}"
-    log "$LOG_INFO" "Newest version: ${ORANGE}$(curl -fsSk $NEW_VERSION_URL)${NC}"
+    log "$LOG_INFO" "Newest version: ${ORANGE}$(curl -fsS $NEW_VERSION_URL)${NC}"
 }
 
 case "$1" in 

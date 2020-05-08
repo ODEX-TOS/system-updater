@@ -81,7 +81,7 @@ function run {
         out=$(echo "$out" "$(version-check 'firewalld' '0.8.1_2' '/usr/lib/python3.8/site-packages/firewall/\*')")
         log "$LOG_INFO" "The calculated command to update your system has been resolved to"
         log "$LOG_WARN" "pacman -Syu --noconfirm $out"
-        if [[ "$ALTER" == "" ]]; then
+        if [[ "$ALTER" == "" &&  -z "$out" ]]; then
                 log "$LOG_INFO" "root privileges are required to update the system packages"
                 sudo pacman -Syu --noconfirm $out || (log "$LOG_ERROR" "Updating the system failed. Check https://www.archlinux.org/ for the latest news"; exit 1)
                 log "$LOG_INFO" "Update is successful!"
