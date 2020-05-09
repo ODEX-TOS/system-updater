@@ -47,6 +47,8 @@ LOG_VERSION="${BLUE}[VERSION]"
 
 # cache data
 CACHE_DIR="$HOME/.cache/tos-updater"
+# amount of mirrors we should filter
+MIRRORS=10
 
 [[ -d "$CACHE_DIR" ]] || mkdir -p "$CACHE_DIR"
 
@@ -57,7 +59,7 @@ function log {
 
 
 function help {
-        printf "${ORANGE}$name ${NC}OPTIONS: cache | difference | help | info | inspect | version\n\n" 
+        printf "${ORANGE}$name ${NC}OPTIONS: cache | difference | help | info | inspect | rank | version\n\n" 
         printf "${ORANGE}USAGE:${NC}\n"
         printf "\t$name  \t\t\t Update your current system\n"
         printf "\t$name  --cache (-c)\t\t Clear out the generated cache data (this action cannot be reverted)\n"
@@ -65,6 +67,7 @@ function help {
         printf "\t$name  --help (-h)\t\t Show this help message\n"
         printf "\t$name  --info (-i)\t\t Show your current tos version\n"
         printf "\t$name  --inspect (-I)\t\t Inspect the updater script to make sure everything is safe\n"
+        printf "\t$name  --rank (-r)\t\t Rank the repo mirrors the have an increased speed\n"
         printf "\t$name  --version (-v)\t\t Show information about this tool\n"
 }
 
@@ -199,6 +202,32 @@ function inspect {
     log "$LOG_INFO" "Check the above script to make sure everything seems normal"
 }
 
+function rank {
+    log "$LOG_INFO" "Ranking your mirrors will increase download speed"
+    log "$LOG_INFO" "However this operation will take a long time"
+    log "$LOG_WARN" "It will perform a lot of TCP/IP calls. If you have a limited network speed we do not recommend you to run this operation.\nPress enter when ready"
+    read result
+    datetime=$(date | tr ' ' '-' )
+    sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist"$datetime".backup
+    log "$LOG_INFO" "Run the command below if your system updates become broken"
+    echo "sudo mv /etc/pacman.d/mirrorlist$datetime.backup /etc/pacman.d/mirrorlist"
+    log "$LOG_INFO" "Pulling newest mirrorlist"
+    tmp=$(mktemp)
+    curl -fsS https://www.archlinux.org/mirrorlist/all/ > "$tmp" || exit 1 
+    mirrors=$(awk '$0 ~ /^Server|^#Server/{print $0}' "$tmp" | wc -l)
+    if ! sudo sed -i 's/^#Server/Server/g' "$tmp"; then
+            log "$LOG_ERROR" "Failed editing downloaded file"
+            exit 1
+    fi
+    log "$LOG_INFO" "Finding top $MIRRORS of $mirrors mirrors."
+    if ! rankmirrors -n "$MIRRORS" "$tmp" | sudo tee "/etc/pacman.d/mirrorlist"; then
+            log "$LOG_ERROR" "Ranking of mirrors failed. Trying to revert"
+            sudo mv /etc/pacman.d/mirrorlist"$datetime".backup /etc/pacman.d/mirrorlist
+            exit 1
+    fi
+    log "$LOG_INFO" "Updated mirrors. Enjoy your new download speeds :)"
+}
+
 function info {
     log "$LOG_INFO" "Current tos version: ${ORANGE}$(cat /etc/version)${NC}"
     log "$LOG_INFO" "Newest version: ${ORANGE}$(curl -fsS $NEW_VERSION_URL)${NC}"
@@ -223,6 +252,9 @@ case "$1" in
     ;;
     "-h"|"--help")
         help
+    ;;
+    "-r"|"--rank")
+        rank
     ;;
     "")
         difference
