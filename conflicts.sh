@@ -75,10 +75,10 @@ function version-check {
 function run {
         # packages to check the version of
         # if the installed version is below a required version then we will perform a custom override to fix the issue
-        out=$(echo "$(version-check 'nss' '3.51.1-1' '--overwrite /usr/lib\*/p11-kit-trust.so')")
-        out=$(echo "$out" "$(version-check 'zn_poly' '0.9.2-2' '--overwrite /usr/lib/libzn_poly-0.9.so')")
-        out=$(echo "$out" "$(version-check 'hplip' '3.20.3-2' '--overwrite /usr/share/hplip/\*')")
-        out=$(echo "$out" "$(version-check 'firewalld' '0.8.1_2' '/usr/lib/python3.8/site-packages/firewall/\*')")
+        out=$(echo "$(version-check 'nss' '3.51.1-1' '--overwrite /usr/lib\*/p11-kit-trust.so')") # date: 2020-04-13
+        out=$(echo "$out" "$(version-check 'zn_poly' '0.9.2-2' '--overwrite /usr/lib/libzn_poly-0.9.so')") # date: 2020-04-14
+        out=$(echo "$out" "$(version-check 'hplip' '3.20.3-2' '--overwrite /usr/share/hplip/\*')") # date: 2020-03-19
+        out=$(echo "$out" "$(version-check 'firewalld' '0.8.1_2' '/usr/lib/python3.8/site-packages/firewall/\*')") # date: 2020-03-01
         log "$LOG_INFO" "The calculated command to update your system has been resolved to"
         log "$LOG_WARN" "pacman -Syu --noconfirm $out"
         if [[ "$ALTER" == "" &&  -z "$out" ]]; then
