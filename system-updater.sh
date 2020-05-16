@@ -36,6 +36,7 @@ LATEST_INFO_URL="https://raw.githubusercontent.com/ODEX-TOS/system-updater/maste
 PACKAGES="https://raw.githubusercontent.com/ODEX-TOS/system-updater/master/packages"
 UPDATER="https://raw.githubusercontent.com/ODEX-TOS/system-updater/master/update.sh"
 CONFLICT="https://raw.githubusercontent.com/ODEX-TOS/system-updater/master/conflicts.sh"
+PRERUN="https://raw.githubusercontent.com/ODEX-TOS/system-updater/master/prerun.sh"
 NEW_VERSION_URL="https://raw.githubusercontent.com/ODEX-TOS/tos-live/master/toslive/version-edit.txt"
 
 # log levels to be used with the log function
@@ -193,6 +194,10 @@ function checkArchConflicts {
 }
 
 function inspect {
+    log "$LOG_INFO" "Downloading the prerun shell script"
+    curl -s "$PRERUN"
+    log "$LOG_INFO" "Check the above script to make sure everything seems normal. Once verified press enter"
+    read -p ""
     log "$LOG_INFO" "Downloading the package conflict script"
     curl -s "$CONFLICT"
     log "$LOG_INFO" "Check the above script to make sure everything seems normal. Once verified press enter"
@@ -233,6 +238,23 @@ function info {
     log "$LOG_INFO" "Newest version: ${ORANGE}$(curl -fsS $NEW_VERSION_URL)${NC}"
 }
 
+# perform a check to see if the update should take plase or the user HAS to manually intervene
+# this check has been added because we did a change to the filesystem implementation.
+# It will check to see if the user already has the latest version.
+# If not the script will abort and thus we will abort
+function pre-run {
+    executable=$(mktemp)
+    curl -fsS "$PRERUN" -o "$executable"
+    ECODE=$(bash "$executable")
+    if [[ "$?" != "0" ]]; then
+        log "$LOG_ERROR" "$ECODE"
+        rm "$executable"
+        exit 1
+    fi
+    log "$LOG_INFO" "$ECODE"
+    rm "$executable"
+}
+
 case "$1" in 
     "-v"|"--version")
         version
@@ -257,6 +279,7 @@ case "$1" in
         rank
     ;;
     "")
+        pre-run
         difference
         # make sure the user is aware of the risk
         printf "\n\n${ORANGE}[WARN] This tool will alter your system. Make sure you have made a backup as some files/packages may change${NC}\n"
