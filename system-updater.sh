@@ -91,7 +91,7 @@ function difference {
         section=$(printf "$data" | grep -A 1000 "$escaped_submenu" | sed "s:$escaped_submenu::g" | awk '{if($0 ~ /\[.*\]/){newfield=1;} if (!newfield){print $0}}')
         # filter out all duplicates
         section=$(( echo "$section"; cat "$CACHE_DIR/$submenu" 2>/dev/null ) | sort | uniq -u)
-        printf "${ORANGE}%s${NC}%s\n\n" "$submenu" "$section"
+        printf "${ORANGE}%s${NC}\n%s\n\n" "$submenu" "$section"
         [[ -d "/tmp/tos-update/" ]] || mkdir -p "/tmp/tos-update"
         # save the current state of the update to a tmp file
         # Once the update is succesfull we can commit the data
