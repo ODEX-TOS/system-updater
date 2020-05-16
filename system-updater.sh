@@ -248,6 +248,10 @@ function pre-run {
     ECODE=$(bash "$executable")
     if [[ "$?" != "0" ]]; then
         log "$LOG_ERROR" "$ECODE"
+        log "$LOG_ERROR" "The above error was thrown in the pre-check hook"
+        log "$LOG_ERROR" "This is a security check to prevent breaking the system"
+        log "$LOG_ERROR" "The source code for this check is $PRERUN"
+        log "$LOG_ERROR" "See what the issue is to manually resolve the issue"
         rm "$executable"
         exit 1
     fi
@@ -279,7 +283,6 @@ case "$1" in
         rank
     ;;
     "")
-        pre-run
         difference
         # make sure the user is aware of the risk
         printf "\n\n${ORANGE}[WARN] This tool will alter your system. Make sure you have made a backup as some files/packages may change${NC}\n"
@@ -288,6 +291,7 @@ case "$1" in
             printf "\n${RED}[ERROR] Running this as root is very dangerous. We will ask you for permission when needed${NC}\n"
             exit 1
         fi
+        pre-run
         update
     ;;
 esac

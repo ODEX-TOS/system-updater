@@ -53,7 +53,7 @@ function check-package-installed {
 
 function run {
     check-pacman
-    check-package-installed "tos/filesystem" "Installing it will remove your passwords"
+    check-package-installed "tos/filesystem" "Installing it will remove your passwords.\nMake sure you have a shell with root privileges and execute the following command\nfind /etc -type f -name '*.pacsave' -exec rename -d ''.pacsave' {} +\nAfter installing this package or you will not be able to log in again."
 
     # everything went well. Notifying the user
     printf "pre-check is a success"
