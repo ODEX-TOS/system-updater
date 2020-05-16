@@ -251,7 +251,7 @@ function pre-run {
         log "$LOG_ERROR" "The above error was thrown in the pre-check hook"
         log "$LOG_ERROR" "This is a security check to prevent breaking the system"
         log "$LOG_ERROR" "The source code for this check is $PRERUN"
-        log "$LOG_ERROR" "See what the issue is to manually resolve the issue"
+        log "$LOG_ERROR" "See what the issue is to manually resolve it"
         rm "$executable"
         exit 1
     fi
