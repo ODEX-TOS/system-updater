@@ -106,10 +106,12 @@ function difference {
 function update {
     # get the blacklist from the config file
     if [[ -f "/etc/system-updater.conf" ]]; then
-        blacklist="$(cat /etc/system-updater.conf | grep exclude.*= | cut -d= -f2 | sed 's:\s*::')"
+        blacklist="$(cat /etc/system-updater.conf | grep "^exclude.*=" | cut -d= -f2 | sed 's:\s*::')"
+        SEND_STATS="$(cat /etc/system-updater.conf | grep "^send-stats.*=" | cut -d= -f2 | sed 's:\s*::')"
     fi
     if [[ -f "system-updater.conf" ]]; then
-        blacklist="$(cat system-updater.conf | grep exclude.*= | cut -d= -f2 | sed 's:\s*::')"
+        blacklist="$(cat system-updater.conf | grep "^exclude.*=" | cut -d= -f2 | sed 's:\s*::')"
+        SEND_STATS="$(cat system-updater.conf | grep "^send-stats.*=" | cut -d= -f2 | sed 's:\s*::')"
     fi
     
     # get the packages from the repo
@@ -143,7 +145,8 @@ function update {
    
     executable=$(mktemp) 
     curl -fsS "$UPDATER" -o "$executable"
-    bash "$executable"
+    # supply stat send env variable to the updater execution
+    SEND_STATS="$SEND_STATS" bash "$executable"
     rm "$executable"
 
     commit

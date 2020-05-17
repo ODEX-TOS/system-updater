@@ -64,6 +64,7 @@ LOG_INFO="${GREEN}[INFO]${NC}"
 LOG_DEBUG="${BLUE}[DEBUG]${NC}"
 
 ALTER="$1" # if this is set we don't alter the state of our machine
+SEND_STATS="${SEND_STATS:-1}"
 
 # $1 is the log type eg LOG_WARN, LOG_ERROR or LOG_NORMAL
 function log {
@@ -284,6 +285,14 @@ function services {
             log "$LOG_WARN" "Your hardware doesn't support trimming"
             log "$LOG_WARN" "We won't enable the systemctl service"
             log "$LOG_WARN" "If you do want this capability then we suggest to use an ssd with trim functionality"
+    fi
+    log "$LOG_INFO" "Checking package stats service timer"
+    if ! systemctl is-active --quiet pkgstats.timer; then
+            log "$LOG_INFO" "Timer is not running. Enabling it now"
+            if [[ "$ALTER" == "" && "$SEND_STATS" == "1" ]]; then
+                systemctl enable --now pkgstats.timer
+                log "$LOG_INFO" "Enabled pkgstats timer"
+            fi
     fi
 }
 
