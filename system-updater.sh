@@ -169,7 +169,7 @@ function update {
     executable=$(mktemp) 
     curl -fsS "$UPDATER" -o "$executable"
     # supply stat send env variable to the updater execution
-    SEND_STATS="$SEND_STATS" bash "$executable" "$2" "$LOG_SUPRESS"
+    SEND_STATS="$SEND_STATS" bash "$executable" "$1" "$2" "$LOG_SUPRESS"
     rm "$executable"
 
     commit
