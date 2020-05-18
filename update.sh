@@ -63,7 +63,14 @@ LOG_ERROR="${RED}[ERROR]${NC}"
 LOG_INFO="${GREEN}[INFO]${NC}"
 LOG_DEBUG="${BLUE}[DEBUG]${NC}"
 
+
 ALTER="$1" # if this is set we don't alter the state of our machine
+# remove the no interaction option from alteration
+if [[ "$ALTER" == "--no-interaction" ]]; then
+    ALTER=""
+    NO_WARNING="1"
+fi
+
 SEND_STATS="${SEND_STATS:-1}"
 
 # $1 is the log type eg LOG_WARN, LOG_ERROR or LOG_NORMAL

@@ -69,7 +69,11 @@ function help {
         printf "\t$name  --info (-i)\t\t Show your current tos version\n"
         printf "\t$name  --inspect (-I)\t\t Inspect the updater script to make sure everything is safe\n"
         printf "\t$name  --rank (-r)\t\t Rank the repo mirrors the have an increased speed\n"
-        printf "\t$name  --version (-v)\t\t Show information about this tool\n"
+        printf "\t$name  --version (-v)\t\t Show information about this tool\n\n"
+        printf "${ORANGE}OPTIONAL ARGUMENTS:${NC}\n"
+        printf "\t$name  --no-warning\t\t Don't show the warning when starting the application\n"
+        printf "\t$name  --no-interaction\t Don't ask the user for permission\n"
+
 }
 
 # print the current version of ths software
@@ -140,13 +144,16 @@ function update {
     done
 
     checkArchConflicts
-
-    tos -Syu $toInstall
+    if [[ "$1" != "" ]]; then
+        tos -Syu $toInstall
+    else
+        tos -Syu --noconfirm $toInstall
+    fi
    
     executable=$(mktemp) 
     curl -fsS "$UPDATER" -o "$executable"
     # supply stat send env variable to the updater execution
-    SEND_STATS="$SEND_STATS" bash "$executable"
+    SEND_STATS="$SEND_STATS" bash "$executable" "$2"
     rm "$executable"
 
     commit
@@ -296,12 +303,14 @@ case "$1" in
         difference
         # make sure the user is aware of the risk
         printf "\n\n${ORANGE}[WARN] This tool will alter your system. Make sure you have made a backup as some files/packages may change${NC}\n"
-        read -p "Press enter to continue"
+        if [[ "$2" != "--no-interaction" && "$2" != "--no-warning" ]]; then
+            read -p "Press enter to continue"
+        fi
         if [[ "$(id -u)" == "0" ]]; then
             printf "\n${RED}[ERROR] Running this as root is very dangerous. We will ask you for permission when needed${NC}\n"
             exit 1
         fi
         pre-run
-        update
+        update "$2"
     ;;
 esac
