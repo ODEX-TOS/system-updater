@@ -54,10 +54,10 @@ if [[ "$@" == *"--no-log"* ]]; then
         LOG_SUPRESS="--no-log"
 fi
 if [[ "$@" == *"--no-warning"* ]]; then
-        NO_WARNING="1"
+        NO_WARNING="--no-warning"
 fi
 if [[ "$@" == *"--no-interaction"* ]]; then
-        NO_INTERACTION="1"
+        NO_INTERACTION="--no-interaction"
 fi
 
 [[ -d "$CACHE_DIR" ]] || mkdir -p "$CACHE_DIR"
