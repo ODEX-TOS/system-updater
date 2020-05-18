@@ -65,11 +65,14 @@ LOG_DEBUG="${BLUE}[DEBUG]${NC}"
 
 
 ALTER="$1" # if this is set we don't alter the state of our machine
-if [[ "$ALTER" == "--no-log" ]]; then
+if [[ "$ALTER" == "--no-log" || "$ALTER" == "--no-interaction" ]]; then
     ALTER=""
 fi
 if [[ "$@" == *"--no-log"* ]]; then
         LOG_SUPRESS="1"
+fi
+if [[ "$@" == *"--no-interaction"* ]]; then
+        NO_INTERACTION="1"
 fi
 # remove the no interaction option from alteration
 if [[ "$ALTER" == "--no-interaction" ]]; then
@@ -112,7 +115,11 @@ function alter-firefox-user-chrome {
 function prepare-firefox {
     log "$LOG_INFO" "Configuring firefox"
     log "$LOG_WARN" "We will be altering userChrome.css"
-    read -p "Do you want to update firefox to the latest to version (y/N)" answer
+    if [[ "$NO_INTERACTION" == "" ]]; then
+        read -p "Do you want to update firefox to the latest to version (y/N)" answer
+    else
+            answer="y"
+    fi
     if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
             log "$LOG_INFO" "Finding all userChrome.css files to update"
             alter-firefox-user-chrome
