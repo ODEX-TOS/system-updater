@@ -324,7 +324,7 @@ case "$1" in
     "-r"|"--rank")
         rank
     ;;
-    ""|"--no-warning"|"--no-interaction")
+    ""|"--no-warning"|"--no-interaction"|"--no-log")
         difference
         # make sure the user is aware of the risk
         printf "\n\n${ORANGE}[WARN] This tool will alter your system. Make sure you have made a backup as some files/packages may change${NC}\n"
