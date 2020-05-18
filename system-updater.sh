@@ -303,7 +303,7 @@ case "$1" in
         difference
         # make sure the user is aware of the risk
         printf "\n\n${ORANGE}[WARN] This tool will alter your system. Make sure you have made a backup as some files/packages may change${NC}\n"
-        if [[ "$2" != "--no-interaction" && "$2" != "--no-warning" ]]; then
+        if [[ "$1" != "--no-interaction" && "$1" != "--no-warning" ]]; then
             read -p "Press enter to continue"
         fi
         if [[ "$(id -u)" == "0" ]]; then

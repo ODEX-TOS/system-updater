@@ -22,7 +22,6 @@ xf86-input-mouse
 xf86-video-intel
 pavucontrol
 yay
-base-devel
 glances
 lsd
 ccat
