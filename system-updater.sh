@@ -126,7 +126,7 @@ function update {
         data=$(printf "$data" | sed 's:'"$item"'::g')
     done
 
-    installed=$(tos -Q | cut -d " " -f1)
+    installed=$(tos -Qq)
 
     toInstall=""
     # Get all packages that are not installed
@@ -135,6 +135,9 @@ function update {
             # package is not installed, but the format could be repo/package
             repo=$(printf "$item" | cut -d "/" -f1)
             package=$(printf "$item" | cut -d "/" -f2)
+            if [[ "$repo" == "$package" ]]; then
+                repo=""
+            fi
             # now we are sure the package is not installed in any repo
             if ! pacman -Sl | grep -Eq "$repo $package.*\[installed\]"; then
                 log "$LOG_INFO" "$repo $package not found. Queuing for installation"
