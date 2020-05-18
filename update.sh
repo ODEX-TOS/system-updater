@@ -64,11 +64,6 @@ LOG_DEBUG="${BLUE}[DEBUG]${NC}"
 
 
 ALTER="$1" # if this is set we don't alter the state of our machine
-# remove the no interaction option from alteration
-if [[ "$ALTER" == "--no-interaction" ]]; then
-    ALTER=""
-    NO_WARNING="1"
-fi
 if [[ "$ALTER" == "--no-log" || "$ALTER" == "--no-interaction" ]]; then
     ALTER=""
 fi
