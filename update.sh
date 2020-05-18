@@ -28,7 +28,6 @@ BLUE='\033[0;35m'
 ORANGE='\033[1;33m'
 NC='\033[0m' # No Color
 
-printf "\n${RED}STARTING FILE ADJUSTMENT${NC}\n"
 
 # MUST READ
 # This script needs to be backwards compatible
@@ -78,6 +77,10 @@ fi
 if [[ "$ALTER" == "--no-interaction" ]]; then
     ALTER=""
     NO_WARNING="1"
+fi
+
+if [[ "$LOG_SUPRESS" == "" ]]; then
+    printf "\n${RED}STARTING FILE ADJUSTMENT${NC}\n"
 fi
 
 SEND_STATS="${SEND_STATS:-1}"
