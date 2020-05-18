@@ -60,7 +60,7 @@ function log {
 
 
 function help {
-        printf "${ORANGE}$name ${NC}OPTIONS: cache | difference | help | info | inspect | rank | version\n\n" 
+        printf "${ORANGE}$name ${NC}OPTIONS: cache | difference | help | info | inspect | packages | rank | version\n\n" 
         printf "${ORANGE}USAGE:${NC}\n"
         printf "\t$name  \t\t\t Update your current system\n"
         printf "\t$name  --cache (-c)\t\t Clear out the generated cache data (this action cannot be reverted)\n"
@@ -68,6 +68,7 @@ function help {
         printf "\t$name  --help (-h)\t\t Show this help message\n"
         printf "\t$name  --info (-i)\t\t Show your current tos version\n"
         printf "\t$name  --inspect (-I)\t\t Inspect the updater script to make sure everything is safe\n"
+        printf "\t$name  --packages (-p)\t\t Print out all packages required for the system\n"
         printf "\t$name  --rank (-r)\t\t Rank the repo mirrors the have an increased speed\n"
         printf "\t$name  --version (-v)\t\t Show information about this tool\n\n"
         printf "${ORANGE}OPTIONAL ARGUMENTS:${NC}\n"
@@ -180,6 +181,12 @@ function commit {
     clear-tmp
     IFS="$OLDIFS"
     log "$LOG_INFO" "System update information succesfully logged to $CACHE_DIR"
+}
+
+function print-packages {
+    log "$LOG_INFO" "Downloading required package data"
+    curl -fsS "$PACKAGES"
+    log "$LOG_INFO" "Packages downloaded"
 }
 
 function clear-tmp {
@@ -298,6 +305,9 @@ case "$1" in
     ;;
     "-h"|"--help")
         help
+    ;;
+    "-p"|"--packages")
+        print-packages
     ;;
     "-r"|"--rank")
         rank
