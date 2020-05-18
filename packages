@@ -6,7 +6,6 @@ archlinux-keyring
 st-tos
 skel
 bluez
-compton
 feh
 python-pip
 rofi
@@ -76,7 +75,7 @@ tlp
 tos-grub-theme
 xf86-input-synaptics
 base
-compton-tryone-tos
+picom-tryone-tos
 materia-gtk-theme
 blueman
 xfce4-settings
