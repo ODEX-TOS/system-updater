@@ -83,9 +83,9 @@ function help {
         printf "\t$name  --rank (-r)\t\t Rank the repo mirrors the have an increased speed\n"
         printf "\t$name  --version (-v)\t\t Show information about this tool\n\n"
         printf "${ORANGE}OPTIONAL ARGUMENTS:${NC}\n"
-        printf "\t$name  --no-warning\t\t Don't show the warning when starting the application\n"
-        printf "\t$name  --no-interaction\t Don't ask the user for permission\n"
-        printf "\t$name  --no-log\t\t Don't log anything\n"
+        printf "\t$name  [...] --no-warning\t Don't show the warning when starting the application\n"
+        printf "\t$name  [...] --no-interaction\t Don't ask the user for permission\n"
+        printf "\t$name  [...] --no-log\t\t Don't log anything\n"
 
 }
 
