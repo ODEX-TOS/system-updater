@@ -299,7 +299,7 @@ case "$1" in
     "-r"|"--rank")
         rank
     ;;
-    "")
+    ""|"--no-warning"|"--no-interaction")
         difference
         # make sure the user is aware of the risk
         printf "\n\n${ORANGE}[WARN] This tool will alter your system. Make sure you have made a backup as some files/packages may change${NC}\n"
@@ -311,6 +311,6 @@ case "$1" in
             exit 1
         fi
         pre-run
-        update "$2"
+        update "$1"
     ;;
 esac
