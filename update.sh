@@ -65,6 +65,12 @@ LOG_DEBUG="${BLUE}[DEBUG]${NC}"
 
 
 ALTER="$1" # if this is set we don't alter the state of our machine
+if [[ "$ALTER" == "--no-log" ]]; then
+    ALTER=""
+fi
+if [[ "$@" == *"--no-log"* ]]; then
+        LOG_SUPRESS="1"
+fi
 # remove the no interaction option from alteration
 if [[ "$ALTER" == "--no-interaction" ]]; then
     ALTER=""
@@ -75,7 +81,9 @@ SEND_STATS="${SEND_STATS:-1}"
 
 # $1 is the log type eg LOG_WARN, LOG_ERROR or LOG_NORMAL
 function log {
-        echo -e "$@"
+        if [[ "$LOG_SUPRESS" == "" ]]; then
+            echo -e "$@"
+        fi
 }
 
 # BEGIN COMPATIBILITY HERE

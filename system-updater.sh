@@ -50,12 +50,23 @@ LOG_VERSION="${BLUE}[VERSION]"
 CACHE_DIR="$HOME/.cache/tos-updater"
 # amount of mirrors we should filter
 MIRRORS=10
+if [[ "$@" == *"--no-log"* ]]; then
+        LOG_SUPRESS="--no-log"
+fi
+if [[ "$@" == *"--no-warning"* ]]; then
+        NO_WARNING="1"
+fi
+if [[ "$@" == *"--no-interaction"* ]]; then
+        NO_INTERACTION="1"
+fi
 
 [[ -d "$CACHE_DIR" ]] || mkdir -p "$CACHE_DIR"
 
 # $1 is the log type eg LOG_WARN, LOG_ERROR or LOG_NORMAL
 function log {
-        echo -e "$@ ${NC}"
+        if [[ "$LOG_SUPRESS" == "" ]]; then
+            echo -e "$@ ${NC}"
+        fi
 }
 
 
@@ -74,6 +85,7 @@ function help {
         printf "${ORANGE}OPTIONAL ARGUMENTS:${NC}\n"
         printf "\t$name  --no-warning\t\t Don't show the warning when starting the application\n"
         printf "\t$name  --no-interaction\t Don't ask the user for permission\n"
+        printf "\t$name  --no-log\t\t Don't log anything\n"
 
 }
 
@@ -157,7 +169,7 @@ function update {
     executable=$(mktemp) 
     curl -fsS "$UPDATER" -o "$executable"
     # supply stat send env variable to the updater execution
-    SEND_STATS="$SEND_STATS" bash "$executable" "$2"
+    SEND_STATS="$SEND_STATS" bash "$executable" "$2" "$LOG_SUPRESS"
     rm "$executable"
 
     commit
@@ -216,7 +228,7 @@ function clear-cache {
 function checkArchConflicts {
     executable=$(mktemp)
     curl -fsS "$CONFLICT" -o "$executable"
-    bash "$executable"
+    bash "$executable" "$LOG_SUPRESS"
     rm "$executable"
 }
 
@@ -272,7 +284,7 @@ function info {
 function pre-run {
     executable=$(mktemp)
     curl -fsS "$PRERUN" -o "$executable"
-    ECODE=$(bash "$executable")
+    ECODE=$(bash "$executable" "$LOG_SUPRESS")
     if [[ "$?" != "0" ]]; then
         log "$LOG_ERROR" "$ECODE"
         log "$LOG_ERROR" "The above error was thrown in the pre-check hook"
@@ -301,7 +313,7 @@ case "$1" in
         inspect
     ;;
     "-c"|"--cache")
-        clear-cache "$2"
+        clear-cache "$NO_INTERACTION" "$NO_WARNING"
     ;;
     "-h"|"--help")
         help
@@ -316,7 +328,7 @@ case "$1" in
         difference
         # make sure the user is aware of the risk
         printf "\n\n${ORANGE}[WARN] This tool will alter your system. Make sure you have made a backup as some files/packages may change${NC}\n"
-        if [[ "$1" != "--no-interaction" && "$1" != "--no-warning" ]]; then
+        if [[ "$NO_WARNING" == "" && "$NO_INTERACTION" == ""  ]]; then
             read -p "Press enter to continue"
         fi
         if [[ "$(id -u)" == "0" ]]; then
@@ -324,6 +336,6 @@ case "$1" in
             exit 1
         fi
         pre-run
-        update "$1"
+        update "$NO_INTERACTION" "$NO_WARNING"
     ;;
 esac
