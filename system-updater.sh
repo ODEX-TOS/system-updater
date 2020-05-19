@@ -160,7 +160,7 @@ function update {
     done
 
     checkArchConflicts
-    if [[ "$1" != "" ]]; then
+    if [[ "$1" == "" ]]; then
         tos -Syu $toInstall
     else
         tos -Syu --noconfirm $toInstall
