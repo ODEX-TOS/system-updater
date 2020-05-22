@@ -80,7 +80,20 @@ function version-check {
     fi
 }
 
+# check if the correct keyring is installed
+# if it is not NO tos package will be able to be installed
+function keyring {
+   if ! pacman -Qq | grep -q "tos-keyring" ; then
+           log "$LOG_WARN" "No tos keyring found"
+           log "$LOG_WARN" "All subsequent updates will fail unless a keyring is present"
+           log "$LOG_WARN" "Downloading and preparing the keyring"
+           sudo pacman -U "https://repo.odex.be/tos-keyring-20200422-1-any.pkg.tar.zst" || exit 1
+           log "$LOG_INFO" "Keyring installed"
+   fi 
+}
+
 function run {
+        keyring
         # packages to check the version of
         # if the installed version is below a required version then we will perform a custom override to fix the issue
         out=$(echo "$(version-check 'nss' '3.51.1-1' '--overwrite /usr/lib\*/p11-kit-trust.so')") # date: 2020-04-13
