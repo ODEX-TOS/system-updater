@@ -32,6 +32,7 @@ TOS version 0.5 Beta
 - Conflicts with newer versions of packages get automatically resolved
 - Periodically trim your ssd if such a functionality exists on a hardware level
 - Signing of packages using the tos keyring is now present
+- You can now switch fuzzy find open applications 
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
