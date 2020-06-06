@@ -33,6 +33,8 @@ TOS version 0.5 Beta
 - Periodically trim your ssd if such a functionality exists on a hardware level
 - Signing of packages using the tos keyring is now present
 - You can now switch fuzzy find open applications 
+- Dark and Light theme mode has been extended
+- Keybinding cheat sheet now also includes application keybinding information
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
