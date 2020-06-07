@@ -51,6 +51,7 @@ ICONS_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/i
 TAGS_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/tags.conf"
 FLOATING_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/floating.conf"
 KEYS_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/keys.conf"
+GENERAL_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/general.conf"
 TOS_COMPLETION="https://raw.githubusercontent.com/ODEX-TOS/tools/master/_tos"
 
 # PATHS
@@ -135,6 +136,7 @@ function add-config {
     TAGS_CONF="$HOME/.config/tos/tags.conf"
     FLOATING_CONF="$HOME/.config/tos/floating.conf"
     KEYS_CONF="$HOME/.config/tos/keys.conf"
+    GENERAL_CONF="$HOME/.config/tos/general.conf"
     if [[ ! -f "$COLORS_CONF" ]]; then
         log "$LOG_INFO" "$COLORS_CONF is missing. It is used to alter the theme colors of your system"
         read -p "Do you want us to add colors.conf to your system (y/N)" answer
@@ -190,6 +192,17 @@ function add-config {
                 if [[ "$ALTER" == "" ]]; then
                         curl -fSsk "$KEYS_CONF_URL" -o "$KEYS_CONF"
                         log "$LOG_INFO" "$KEYS_CONF has been installed"
+                fi
+        fi
+    fi
+    if [[ ! -f "$GENERAL_CONF" ]]; then
+        log "$LOG_INFO" "$GENERAL_CONF is missing. It describes how the Desktop Environment should behave"
+        read -p "Do you want us to add general.conf to your system (y/N)" answer
+        if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
+                log "$LOG_INFO" "Downloading latest version of general.conf"
+                if [[ "$ALTER" == "" ]]; then
+                        curl -fSsk "$GENERAL_CONF_URL" -o "$GENERAL_CONF"
+                        log "$LOG_INFO" "$GENERAL_CONF has been installed"
                 fi
         fi
     fi

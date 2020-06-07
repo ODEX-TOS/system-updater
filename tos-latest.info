@@ -35,6 +35,7 @@ TOS version 0.5 Beta
 - You can now switch fuzzy find open applications 
 - Dark and Light theme mode has been extended
 - Keybinding cheat sheet now also includes application keybinding information
+- Added general.conf for general configuration of AwesomeWM
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
@@ -54,3 +55,4 @@ TOS version 0.5 Beta
 - Weather widget now correctly displays the current weather icon
 - Unwanted widgets no longer get drawn based on the available hardware
 - Iana etc filesystem is now correctly supported 
+- Fixed some default keybindings colliding
