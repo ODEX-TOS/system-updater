@@ -1,5 +1,6 @@
 awesome-tos
 tos/filesystem
+tos/systemd
 tos-keyring
 pkgstats
 light
