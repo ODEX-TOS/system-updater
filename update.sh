@@ -46,6 +46,10 @@ NC='\033[0m' # No Color
 
 # URLS
 USERCHROME="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/tos-firefox/chrome/userChrome.css"
+USERCONTENT="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/tos-firefox/chrome/userContent.css"
+FF_ADD="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/tos-firefox/chrome/add.svg"
+FF_LARROW="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/tos-firefox/chrome/left-arrow.svg"
+FF_RARROW="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/tos-firefox/chrome/right-arrow.svg"
 COLOR_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/colors.conf"
 ICONS_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/icons.conf"
 TAGS_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/tags.conf"
@@ -95,16 +99,50 @@ function log {
 function alter-firefox-user-chrome {
     log "$LOG_INFO" "Downloading new userChrome.css file"
     data=$(curl -fSsk "$USERCHROME")
+    data2=$(curl -fSsk "$USERCONTENT")
+    add=$(curl -fSsk "$FF_ADD")
+    larrow=$(curl -fSsk "$FF_LARROW")
+    rarrow=$(curl -fSsk "$FF_RARROW")
     log "$LOG_INFO" "Verifying the data"
-    if [[ "$data" != "" ]]; then
-            log "$LOG_INFO" "Downloaded file is valid. Applying patches"
+    if [[ "$ALTER" == "" ]]; then
+        cp -r /etc/skel/.mozilla/firefox/tos.default "$HOME"/.mozilla/firefox/
+    fi
+    if [[ "$data" != "" || "$data2" != "" ]]; then
+        log "$LOG_INFO" "Downloaded file is valid. Applying patches"
         for chrome in $HOME/.mozilla/firefox/*/chrome/userChrome.css; do
             log "$LOG_INFO" "Altering $chrome"
             if [[ "$ALTER" == "" ]]; then
                     echo "$data" > "$chrome"
                     log "$LOG_INFO" "populated $chrome with correct data"
             fi 
-
+        done
+        for chrome in $HOME/.mozilla/firefox/*/chrome/userContent.css; do
+            log "$LOG_INFO" "Altering $chrome"
+            if [[ "$ALTER" == "" ]]; then
+                    echo "$data2" > "$chrome"
+                    log "$LOG_INFO" "populated $chrome with correct data"
+            fi 
+        done
+        for chrome in $HOME/.mozilla/firefox/*/chrome/add.svg; do
+            log "$LOG_INFO" "Altering $chrome"
+            if [[ "$ALTER" == "" ]]; then
+                    echo "$add" > "$chrome"
+                    log "$LOG_INFO" "populated $chrome with correct data"
+            fi 
+        done
+        for chrome in $HOME/.mozilla/firefox/*/chrome/left-arrow.svg; do
+            log "$LOG_INFO" "Altering $chrome"
+            if [[ "$ALTER" == "" ]]; then
+                    echo "$larrow" > "$chrome"
+                    log "$LOG_INFO" "populated $chrome with correct data"
+            fi 
+        done
+        for chrome in $HOME/.mozilla/firefox/*/chrome/right-arrow.svg; do
+            log "$LOG_INFO" "Altering $chrome"
+            if [[ "$ALTER" == "" ]]; then
+                    echo "$rarrow" > "$chrome"
+                    log "$LOG_INFO" "populated $chrome with correct data"
+            fi 
         done
     else
             log "$LOG_ERROR" "Downloading userchrome.css failed from $USERCHROME"
