@@ -87,9 +87,34 @@ function keyring {
            log "$LOG_WARN" "No tos keyring found"
            log "$LOG_WARN" "All subsequent updates will fail unless a keyring is present"
            log "$LOG_WARN" "Downloading and preparing the keyring"
+           fake-keyring || exit 1
            sudo pacman -U "https://repo.odex.be/tos-keyring-20200422-1-any.pkg.tar.zst" || exit 1
            log "$LOG_INFO" "Keyring installed"
    fi 
+}
+
+function fake-keyring {
+    keys=$(curl -fSsk "https://raw.githubusercontent.com/ODEX-TOS/tos-live/master/repo/BUILD/KEYRING/tos.gpg")
+    revoked=$(curl -fSsk "https://raw.githubusercontent.com/ODEX-TOS/tos-live/master/repo/BUILD/KEYRING/tos-revoked")
+    trusted=$(curl -fSsk "https://raw.githubusercontent.com/ODEX-TOS/tos-live/master/repo/BUILD/KEYRING/tos-trusted")
+    echo "$keys" | sudo tee /usr/share/pacman/keyrings/temp.gpg &>/dev/null
+    echo "$revoked" | sudo tee /usr/share/pacman/keyrings/temp-revoked &>/dev/null
+    echo "$trusted" | sudo tee /usr/share/pacman/keyrings/temp-trusted &>/dev/null
+    sudo /usr/bin/pacman-key --populate temp
+}
+
+function cleanup-keyring {
+    dir="/usr/share/pacman/keyrings"
+    if [[ -f "$dir/temp.gpg" ]]; then
+       sudo rm "$dir/temp.gpg"
+    fi
+    if [[ -f "$dir/temp-revoked" ]]; then
+       sudo rm "$dir/temp-revoked"
+    fi
+    if [[ -f "$dir/temp-trusted" ]]; then
+       sudo rm "$dir/temp-trusted"
+    fi
+
 }
 
 function run {
@@ -107,6 +132,7 @@ function run {
                 sudo pacman -Syu --noconfirm $out || (log "$LOG_ERROR" "Updating the system failed. Check https://www.archlinux.org/ for the latest news"; exit 1)
                 log "$LOG_INFO" "Update is successful!"
         fi
+        cleanup-keyring
 }
 
 run
