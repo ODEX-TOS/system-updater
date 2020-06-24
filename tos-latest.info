@@ -38,6 +38,7 @@ TOS version 0.6 Beta
 - Added general.conf for general configuration of AwesomeWM
 - Added udev rules to auto mount usb sticks
 - Made the firefox theme more inline with the rest of the system
+- Added a screenshot utility to awesome-tos
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
