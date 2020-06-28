@@ -117,6 +117,15 @@ function cleanup-keyring {
 
 }
 
+function replace-package {
+    if [[ "$1" == "" || "$2" == "" ]]; then
+            exit 1
+    fi
+    if pacman -Q | grep -q "$1" ; then
+            echo "$2"
+    fi
+}
+
 function run {
         keyring
         # packages to check the version of
@@ -125,6 +134,9 @@ function run {
         out=$(echo "$out" "$(version-check 'zn_poly' '0.9.2-2' '--overwrite /usr/lib/libzn_poly-0.9.so')") # date: 2020-04-14
         out=$(echo "$out" "$(version-check 'hplip' '3.20.3-2' '--overwrite /usr/share/hplip/\*')") # date: 2020-03-19
         out=$(echo "$out" "$(version-check 'firewalld' '0.8.1_2' '/usr/lib/python3.8/site-packages/firewall/\*')") # date: 2020-03-01
+
+        out=$(echo "$out" "$(replace-package 'compton-tryone-tos' 'picom-tryone-tos')")
+
         log "$LOG_INFO" "The calculated command to update your system has been resolved to"
         log "$LOG_WARN" "pacman -Syu --noconfirm $out"
         if [[ "$ALTER" == "" &&  -z "$out" ]]; then
