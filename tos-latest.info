@@ -39,6 +39,9 @@ TOS version 0.6 Beta
 - Added udev rules to auto mount usb sticks
 - Made the firefox theme more inline with the rest of the system
 - Added a screenshot utility to awesome-tos
+- Added a break timer that helps you manage your health and time
+- Added a window screenshot option so people can take pictures of their windows
+- Added an option to remove shadow from the window screenshot tool (see general.conf)
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
@@ -59,3 +62,9 @@ TOS version 0.6 Beta
 - Unwanted widgets no longer get drawn based on the available hardware
 - Iana etc filesystem is now correctly supported 
 - Fixed some default keybindings colliding
+- Fixed battery widget from using the wrong images
+- Fixed DE and Session env variables to be correctly set
+- Fixed Bluetooth hardware check to prevent bluetooth from showing up when not used
+- Fixed sound pop from missing when changing the sound
+- Correct fallback color is now used when not using colors.conf
+- 
