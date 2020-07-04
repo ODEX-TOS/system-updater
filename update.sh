@@ -56,7 +56,7 @@ TAGS_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/ta
 FLOATING_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/floating.conf"
 KEYS_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/keys.conf"
 GENERAL_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/general.conf"
-PLUGIN_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/plugin.conf"
+PLUGIN_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/plugins.conf"
 TOS_COMPLETION="https://raw.githubusercontent.com/ODEX-TOS/tools/master/_tos"
 
 # PATHS
@@ -176,7 +176,7 @@ function add-config {
     FLOATING_CONF="$HOME/.config/tos/floating.conf"
     KEYS_CONF="$HOME/.config/tos/keys.conf"
     GENERAL_CONF="$HOME/.config/tos/general.conf"
-    PLUGIN_CONF="$HOME/.config/tos/plugin.conf"
+    PLUGIN_CONF="$HOME/.config/tos/plugins.conf"
     if [[ ! -f "$COLORS_CONF" ]]; then
         log "$LOG_INFO" "$COLORS_CONF is missing. It is used to alter the theme colors of your system"
         read -p "Do you want us to add colors.conf to your system (y/N)" answer
@@ -398,6 +398,8 @@ function add-default-plugins {
             log "$LOG_INFO" "Copying over default plugins"
             [[ ! -d "$HOME/.config/tde" ]] && mkdir -p "$HOME/.config/tde"
             cp -r "/etc/skel/.config/tde"* "$HOME/.config/tde/"
+        else
+            log "$LOG_WARN" "TDE configs are not present in skel. Make sure skel is installed and/or is up to date."
         fi
     fi
 }
