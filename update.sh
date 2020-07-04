@@ -388,9 +388,24 @@ function etc-issue {
     fi
 }
 
+function add-default-plugins {
+    plug="$HOME/.config/tde/"
+    log "$LOG_INFO" "Checking default plugins in $plug"
+    if [[ "$ALTER" == "" ]]; then
+        # check if /etc/skel/.config/tde exists
+        # if it does then copy over those files
+        if [[ -d "/etc/skel/.config/tde" ]]; then
+            log "$LOG_INFO" "Copying over default plugins"
+            [[ ! -d "$HOME/.config/tde" ]] && mkdir -p "$HOME/.config/tde"
+            cp -r "/etc/skel/.config/tde"* "$HOME/.config/tde/"
+        fi
+    fi
+}
+
 function run {
         prepare-firefox # convert your firefox installation
         add-config # add missing configuration files
+        add-default-plugins
         group-add
         setup-greeter
         tos-completion
