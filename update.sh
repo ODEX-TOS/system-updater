@@ -56,6 +56,7 @@ TAGS_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/ta
 FLOATING_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/floating.conf"
 KEYS_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/keys.conf"
 GENERAL_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/general.conf"
+PLUGIN_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/plugin.conf"
 TOS_COMPLETION="https://raw.githubusercontent.com/ODEX-TOS/tools/master/_tos"
 
 # PATHS
@@ -175,6 +176,7 @@ function add-config {
     FLOATING_CONF="$HOME/.config/tos/floating.conf"
     KEYS_CONF="$HOME/.config/tos/keys.conf"
     GENERAL_CONF="$HOME/.config/tos/general.conf"
+    PLUGIN_CONF="$HOME/.config/tos/plugin.conf"
     if [[ ! -f "$COLORS_CONF" ]]; then
         log "$LOG_INFO" "$COLORS_CONF is missing. It is used to alter the theme colors of your system"
         read -p "Do you want us to add colors.conf to your system (y/N)" answer
@@ -241,6 +243,17 @@ function add-config {
                 if [[ "$ALTER" == "" ]]; then
                         curl -fSsk "$GENERAL_CONF_URL" -o "$GENERAL_CONF"
                         log "$LOG_INFO" "$GENERAL_CONF has been installed"
+                fi
+        fi
+    fi
+    if [[ ! -f "$PLUGIN_CONF" ]]; then
+        log "$LOG_INFO" "$PLUGIN_CONF is missing. It is used to enable/disable custom plugins"
+        read -p "Do you want us to add plugins.conf to your system (y/N)" answer
+        if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
+                log "$LOG_INFO" "Downloading latest version of plugins.conf"
+                if [[ "$ALTER" == "" ]]; then
+                        curl -fSsk "$PLUGIN_CONF_URL" -o "$PLUGIN_CONF"
+                        log "$LOG_INFO" "$PLUGIN_CONF has been installed"
                 fi
         fi
     fi
