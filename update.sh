@@ -397,7 +397,7 @@ function add-default-plugins {
         if [[ -d "/etc/skel/.config/tde" ]]; then
             log "$LOG_INFO" "Copying over default plugins"
             [[ ! -d "$HOME/.config/tde" ]] && mkdir -p "$HOME/.config/tde"
-            cp -r "/etc/skel/.config/tde"* "$HOME/.config/tde/"
+            cp -r "/etc/skel/.config/tde/"* "$HOME/.config/tde/"
         else
             log "$LOG_WARN" "TDE configs are not present in skel. Make sure skel is installed and/or is up to date."
         fi
