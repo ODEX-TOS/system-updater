@@ -55,7 +55,7 @@ function check-rofi-tos {
     package="rofi-tos"
     if ! pacman -Sl | grep -Eq "$repo $package.*\[installed\]"; then
             # remove the old rofi
-            sudo pacman -Rns awesome-tos tos-tools rofi || exit 1
+            sudo pacman -Rns awesome-tos tos-tools rofi
             # install the packages again
             sudo pacman -Syu awesome-tos || exit 1
     fi
