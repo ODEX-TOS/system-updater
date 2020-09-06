@@ -43,6 +43,7 @@ TOS version 0.6 Beta
 - Added a window screenshot option so people can take pictures of their windows
 - Added an option to remove shadow from the window screenshot tool (see general.conf)
 - Added plugins for TDE (widgets and modules)
+- Titlebar now is also blurred
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
