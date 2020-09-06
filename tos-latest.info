@@ -44,6 +44,9 @@ TOS version 0.6 Beta
 - Added an option to remove shadow from the window screenshot tool (see general.conf)
 - Added plugins for TDE (widgets and modules)
 - Titlebar now is also blurred
+- Added stacktrace analyser
+- Added opt out feature for stacktrace analyser (general.conf)
+- Showed name of application in titlebar
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
@@ -69,4 +72,5 @@ TOS version 0.6 Beta
 - Fixed Bluetooth hardware check to prevent bluetooth from showing up when not used
 - Fixed sound pop from missing when changing the sound
 - Correct fallback color is now used when not using colors.conf
-- 
+- log formatting on stdout is now symmetric 
+- Increased logger speed by over 300 times
