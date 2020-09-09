@@ -59,6 +59,10 @@ GENERAL_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos
 PLUGIN_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/tos/plugins.conf"
 TOS_COMPLETION="https://raw.githubusercontent.com/ODEX-TOS/tools/master/_tos"
 
+# lightdm configuration
+LIGHTDM_CONF_URL="https://raw.githubusercontent.com/ODEX-TOS/lightdm-tde/master/lightdm.conf"
+LIGHTDM_GREETER_URL="https://raw.githubusercontent.com/ODEX-TOS/lightdm-tde/master/lightdm-webkit2-greeter.conf"
+
 # PATHS
 SYSTEMD_DM_PATH="/etc/systemd/system/display-manager.service"
 
@@ -276,20 +280,22 @@ function group-add {
 
 function setup-greeter {
     log "$LOG_INFO" "Checking current active greeter"
-    if ! file "$SYSTEMD_DM_PATH" | grep -q "sddm.service"; then
+    if ! file "$SYSTEMD_DM_PATH" | grep -q "lightdm.service"; then
         log "$LOG_INFO" "Setting up the new greeter"
-        read -p "Would you like us to change the greeter to sddm (y/N)" answer
+        read -p "Would you like us to change the greeter to lightdm (y/N)" answer
         if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
-            log "$LOG_WARN" "Changing the greeter to sddm"
+            log "$LOG_WARN" "Changing the greeter to lightdm"
             if [[ "$ALTER" == "" ]]; then
-                sudo systemctl disable lightdm # disable the old greeter
-                sudo systemctl enable sddm # enabeling the new greeter
+                sudo systemctl disable sddm # disable the old greeter
+                sudo systemctl enable lightdm # enabeling the new greeter
+                curl -fSsk "$LIGHTDM_CONF_URL" | sudo tee /etc/lightdm/lightdm.conf
+                curl -fSsk "$LIGHTDM_GREETER_URL" | sudo tee /etc/lightdm/lightdm-webkit2-greeter.conf
             fi
             log "$LOG_WARN" "If your greeter is broken you need to do the following in a terminal"
-            log "$LOG_WARN" "sudo systemctl disable sddm && sudo systemctl enable lightdm"
+            log "$LOG_WARN" "sudo systemctl disable lightdm && sudo systemctl enable sddm"
         fi
     else
-        log "$LOG_INFO" "Official Display Manager SDDM is being used"
+        log "$LOG_INFO" "Official Display Manager lightdm is being used"
     fi
 }
 
