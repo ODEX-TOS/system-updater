@@ -105,9 +105,6 @@ function alter-firefox-user-chrome {
     log "$LOG_INFO" "Downloading new userChrome.css file"
     data=$(curl -fSsk "$USERCHROME")
     data2=$(curl -fSsk "$USERCONTENT")
-    add=$(curl -fSsk "$FF_ADD")
-    larrow=$(curl -fSsk "$FF_LARROW")
-    rarrow=$(curl -fSsk "$FF_RARROW")
     log "$LOG_INFO" "Verifying the data"
     if [[ "$ALTER" == "" ]]; then
         cp -r /etc/skel/.mozilla/firefox/tos.default "$HOME"/.mozilla/firefox/
@@ -125,27 +122,6 @@ function alter-firefox-user-chrome {
             log "$LOG_INFO" "Altering $chrome"
             if [[ "$ALTER" == "" ]]; then
                     echo "$data2" > "$chrome"
-                    log "$LOG_INFO" "populated $chrome with correct data"
-            fi 
-        done
-        for chrome in $HOME/.mozilla/firefox/*/chrome/add.svg; do
-            log "$LOG_INFO" "Altering $chrome"
-            if [[ "$ALTER" == "" ]]; then
-                    echo "$add" > "$chrome"
-                    log "$LOG_INFO" "populated $chrome with correct data"
-            fi 
-        done
-        for chrome in $HOME/.mozilla/firefox/*/chrome/left-arrow.svg; do
-            log "$LOG_INFO" "Altering $chrome"
-            if [[ "$ALTER" == "" ]]; then
-                    echo "$larrow" > "$chrome"
-                    log "$LOG_INFO" "populated $chrome with correct data"
-            fi 
-        done
-        for chrome in $HOME/.mozilla/firefox/*/chrome/right-arrow.svg; do
-            log "$LOG_INFO" "Altering $chrome"
-            if [[ "$ALTER" == "" ]]; then
-                    echo "$rarrow" > "$chrome"
                     log "$LOG_INFO" "populated $chrome with correct data"
             fi 
         done
@@ -288,8 +264,8 @@ function setup-greeter {
             if [[ "$ALTER" == "" ]]; then
                 sudo systemctl disable sddm # disable the old greeter
                 sudo systemctl enable lightdm # enabeling the new greeter
-                curl -fSsk "$LIGHTDM_CONF_URL" | sudo tee /etc/lightdm/lightdm.conf
-                curl -fSsk "$LIGHTDM_GREETER_URL" | sudo tee /etc/lightdm/lightdm-webkit2-greeter.conf
+                curl -fSsk "$LIGHTDM_CONF_URL" | sudo tee /etc/lightdm/lightdm.conf >/dev/null
+                curl -fSsk "$LIGHTDM_GREETER_URL" | sudo tee /etc/lightdm/lightdm-webkit2-greeter.conf >/dev/null
             fi
             log "$LOG_WARN" "If your greeter is broken you need to do the following in a terminal"
             log "$LOG_WARN" "sudo systemctl disable lightdm && sudo systemctl enable sddm"
