@@ -70,11 +70,11 @@ function version-check {
     if [[ "$2" == "" ]]; then
             exit 1
     fi
-    installed=$(pacman -Qi "$1" 2>/dev/null | grep "Version" | awk '{printf $3}' || return)
+    installed="$(pacman -Qi "$1" 2>/dev/null | grep "Version" | awk '{printf $3}' || return)"
     if [[ "$installed" ==  "$2" || "$installed" == "" ]]; then
             return
     fi
-    if [[ "$installed" == "$(echo $2'\n'$installed | sort | head -n1 | tr -d '\n')" ]]; then
+    if [[ "$2" == "$(printf "$2\n$installed" | sort | head -n1 | tr -d '\n')" ]]; then
             echo "$3"
             return
     fi
@@ -133,13 +133,15 @@ function run {
         out=$(echo "$(version-check 'nss' '3.51.1-1' '--overwrite /usr/lib\*/p11-kit-trust.so')") # date: 2020-04-13
         out=$(echo "$out" "$(version-check 'zn_poly' '0.9.2-2' '--overwrite /usr/lib/libzn_poly-0.9.so')") # date: 2020-04-14
         out=$(echo "$out" "$(version-check 'hplip' '3.20.3-2' '--overwrite /usr/share/hplip/\*')") # date: 2020-03-19
-        out=$(echo "$out" "$(version-check 'firewalld' '0.8.1_2' '/usr/lib/python3.8/site-packages/firewall/\*')") # date: 2020-03-01
+        out=$(echo "$out" "$(version-check 'firewalld' '0.8.1_2' '--overwrite /usr/lib/python3.8/site-packages/firewall/\*')") # date: 2020-03-01
+
+        out=$(echo "$out" "$(version-check 'awesome-tos' '4.3.10212.7-1' '--overwrite /usr/share/xsessions/tde.desktop')")
 
         out=$(echo "$out" "$(replace-package 'compton-tryone-tos' 'picom-tryone-tos')")
 
         log "$LOG_INFO" "The calculated command to update your system has been resolved to"
         log "$LOG_WARN" "pacman -Syu --noconfirm $out"
-        if [[ "$ALTER" == "" &&  -z "$out" ]]; then
+        if [[ "$ALTER" == "" &&  ! -z "$out" ]]; then
                 log "$LOG_INFO" "root privileges are required to update the system packages"
                 sudo pacman -Syu --noconfirm $out || (log "$LOG_ERROR" "Updating the system failed. Check https://www.archlinux.org/ for the latest news"; exit 1)
                 log "$LOG_INFO" "Update is successful!"
