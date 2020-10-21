@@ -2,3 +2,6 @@ archlinux-keyring
 tos-base-desktop
 tos/filesystem
 tos/systemd
+tde-contrib
+
+

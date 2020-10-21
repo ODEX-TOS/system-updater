@@ -49,6 +49,10 @@ TOS version 0.6 Beta
 - Showed name of application in titlebar
 - Changed styling of titlebar
 - Titlbar color is based of the application
+- Automatically hibernate when not using your environment for a long time
+- Added a new package TDE-contrib containing less important features of tde
+- Added clipboard manager to tde
+- API documentation for TDE in /usr/share/doc/tde
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
