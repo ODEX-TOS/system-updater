@@ -83,3 +83,4 @@ TOS version 0.6 Beta
 - Increased logger speed by over 300 times
 - General bug fixing
 - Fixed small bugs related to popup dialogs
+- Fixed lxsession launcher from creating multiple connections when restarting TDE
