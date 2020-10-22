@@ -53,6 +53,7 @@ TOS version 0.6 Beta
 - Added a new package TDE-contrib containing less important features of tde
 - Added clipboard manager to tde
 - API documentation for TDE in /usr/share/doc/tde
+- Added settings application (mod + s or by launching TDE settings from the application launcher)
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
