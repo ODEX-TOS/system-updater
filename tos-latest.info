@@ -54,6 +54,7 @@ TOS version 0.6 Beta
 - Added clipboard manager to tde
 - API documentation for TDE in /usr/share/doc/tde
 - Added settings application (mod + s or by launching TDE settings from the application launcher)
+- Screenshots automatically get compressed
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
@@ -84,3 +85,4 @@ TOS version 0.6 Beta
 - General bug fixing
 - Fixed small bugs related to popup dialogs
 - Fixed lxsession launcher from creating multiple connections when restarting TDE
+- Shadows now get applied to all types of screenshots
