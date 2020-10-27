@@ -87,3 +87,4 @@ TOS version 0.6 Beta
 - Fixed lxsession launcher from creating multiple connections when restarting TDE
 - Shadows now get applied to all types of screenshots
 - Settings app now correctly sets the dark/light mode
+- Settings app now correctly saves the background image
