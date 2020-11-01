@@ -55,6 +55,8 @@ TOS version 0.6 Beta
 - API documentation for TDE in /usr/share/doc/tde
 - Added settings application (mod + s or by launching TDE settings from the application launcher)
 - Screenshots automatically get compressed
+- Added desktop icons
+- Added selection functionality
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
