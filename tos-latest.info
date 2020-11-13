@@ -57,6 +57,7 @@ TOS version 0.6 Beta
 - Screenshots automatically get compressed
 - Added desktop icons
 - Added selection functionality
+- Added option to enable/disable desktop drawing
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
