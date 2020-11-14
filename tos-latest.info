@@ -2,6 +2,7 @@
 TOS version 0.6 Beta
 
 [New Features]
+- Added translation support (dutch implemented) based on the system language
 - Added a brightness and volume overlay
 - Added support for oled screens
 - Added dpi scaling for applications
