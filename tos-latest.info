@@ -59,6 +59,7 @@ TOS version 0.6 Beta
 - Added desktop icons
 - Added selection functionality
 - Added option to enable/disable desktop drawing
+- Support for tapping on touchpads
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
