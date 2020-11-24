@@ -96,3 +96,4 @@ TOS version 0.6 Beta
 - Don't spam users with security update notifications
 - Improved startup time of TDE
 - Decreased average runtime cpu usage
+- Decrease cpu time to less that 1% on average systems
