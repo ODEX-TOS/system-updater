@@ -94,3 +94,5 @@ TOS version 0.6 Beta
 - Settings app now correctly sets the dark/light mode
 - Settings app now correctly saves the background image
 - Don't spam users with security update notifications
+- Improved startup time of TDE
+- Decreased average runtime cpu usage
