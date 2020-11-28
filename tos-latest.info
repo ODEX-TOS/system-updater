@@ -61,6 +61,7 @@ TOS version 0.6 Beta
 - Added option to enable/disable desktop drawing
 - Support for tapping on touchpads
 - Alt+Tab between applications
+- Add support for Picture-In-Picture mode
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
@@ -98,3 +99,4 @@ TOS version 0.6 Beta
 - Improved startup time of TDE
 - Decreased average runtime cpu usage
 - Decrease cpu time to less that 1% on average systems
+- Fixed client rules
