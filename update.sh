@@ -386,8 +386,23 @@ function add-default-plugins {
     fi
 }
 
+# we changed the default image
+# If we detect that the user is using it we must change it to the new version
+function fix-default-image {
+    theme="$HOME/.config/tos/theme"
+    if [[ -f "$theme"  && -f "/usr/share/backgrounds/tos/default.jpg" ]]; then
+            if grep "/usr/share/backgrounds/tos/default.png" "$theme"; then
+                LOG "$LOG_INFO" "We recently changed the default wallpaper from default.png to default.jpg to reduce disk space"
+                if [[ "$ALTER" == "" ]]; then
+                    sed -i 's;/usr/share/backgrounds/tos/default.png;/usr/share/backgrounds/tos/default.jpg;g' "$theme"
+                fi
+            fi
+    fi
+}
+
 function run {
         prepare-firefox # convert your firefox installation
+        fix-default-image
         add-config # add missing configuration files
         add-default-plugins
         group-add

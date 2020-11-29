@@ -100,3 +100,4 @@ TOS version 0.6 Beta
 - Decreased average runtime cpu usage
 - Decrease cpu time to less that 1% on average systems
 - Fixed client rules
+- Made image footprint smaller
