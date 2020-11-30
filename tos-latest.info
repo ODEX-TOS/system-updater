@@ -62,6 +62,7 @@ TOS version 0.6 Beta
 - Support for tapping on touchpads
 - Alt+Tab between applications
 - Add support for Picture-In-Picture mode
+- Added advanced calculator to app launcher (Supports Symbols, Functions, Units, Variables, Algebra, Calculus, matrices, vectors and more)
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery
