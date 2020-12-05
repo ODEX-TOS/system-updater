@@ -403,12 +403,6 @@ function fix-default-image {
 # configure some pacman options to be one by default
 function pacman-conf {
     _CONF="/etc/pacman.conf"
-    if ! grep -q "^ILoveCandy" "$_CONF"; then
-        log "$LOG_INFO" "Package Updater backend renderer changed."
-        if [[ "$ALTER" == "" ]]; then
-            echo "ILoveCandy" | sudo tee -a "$_CONF" &>/dev/null
-        fi
-    fi 
     if grep -q "#Color" "$_CONF"; then
         log "$LOG_INFO" "Enabling package manager color mode."
         if [[ "$ALTER" == "" ]]; then
@@ -419,6 +413,12 @@ function pacman-conf {
         log "$LOG_INFO" "Enabling package manager total download mode."
         if [[ "$ALTER" == "" ]]; then
             sudo sed -i 's/#TotalDownload/TotalDownload/g' "$_CONF"
+        fi
+    fi 
+    if ! grep -q "^ILoveCandy" "$_CONF"; then
+        log "$LOG_INFO" "Package Updater backend renderer changed."
+        if [[ "$ALTER" == "" ]]; then
+            sudo sed -i 's/TotalDownload/TotalDownload\nILoveCandy/g' "$_CONF"
         fi
     fi 
 }
