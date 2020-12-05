@@ -406,7 +406,7 @@ function pacman-conf {
     if ! grep -q "^ILoveCandy" "$_CONF"; then
         log "$LOG_INFO" "Package Updater backend renderer changed."
         if [[ "$ALTER" == "" ]]; then
-            echo "ILoveCandy" | sudo tee -a "$_CONF"
+            echo "ILoveCandy" | sudo tee -a "$_CONF" &>/dev/null
         fi
     fi 
     if grep -q "#Color" "$_CONF"; then
