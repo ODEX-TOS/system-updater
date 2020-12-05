@@ -391,13 +391,36 @@ function add-default-plugins {
 function fix-default-image {
     theme="$HOME/.config/tos/theme"
     if [[ -f "$theme"  && -f "/usr/share/backgrounds/tos/default.jpg" ]]; then
-            if grep "/usr/share/backgrounds/tos/default.png" "$theme"; then
-                LOG "$LOG_INFO" "We recently changed the default wallpaper from default.png to default.jpg to reduce disk space"
+            if grep -q "/usr/share/backgrounds/tos/default.png" "$theme"; then
+                log "$LOG_INFO" "We recently changed the default wallpaper from default.png to default.jpg to reduce disk space"
                 if [[ "$ALTER" == "" ]]; then
                     sed -i 's;/usr/share/backgrounds/tos/default.png;/usr/share/backgrounds/tos/default.jpg;g' "$theme"
                 fi
             fi
     fi
+}
+
+# configure some pacman options to be one by default
+function pacman-conf {
+    _CONF="/etc/pacman.conf"
+    if ! grep -q "^ILoveCandy" "$_CONF"; then
+        log "$LOG_INFO" "Package Updater backend renderer changed."
+        if [[ "$ALTER" == "" ]]; then
+            echo "ILoveCandy" | sudo tee -a "$_CONF"
+        fi
+    fi 
+    if grep -q "#Color" "$_CONF"; then
+        log "$LOG_INFO" "Enabling package manager color mode."
+        if [[ "$ALTER" == "" ]]; then
+            sudo sed -i 's/#Color/Color/g'
+        fi
+    fi 
+    if grep -q "#TotalDownload" "$_CONF"; then
+        log "$LOG_INFO" "Enabling package manager total download mode."
+        if [[ "$ALTER" == "" ]]; then
+            sudo sed -i 's/#TotalDownload/TotalDownload/g'
+        fi
+    fi 
 }
 
 function run {
@@ -413,6 +436,7 @@ function run {
         kernel-hook
         services
         etc-issue
+        pacman-conf
 }   
 
 run
