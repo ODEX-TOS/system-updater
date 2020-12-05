@@ -412,13 +412,13 @@ function pacman-conf {
     if grep -q "#Color" "$_CONF"; then
         log "$LOG_INFO" "Enabling package manager color mode."
         if [[ "$ALTER" == "" ]]; then
-            sudo sed -i 's/#Color/Color/g'
+            sudo sed -i 's/#Color/Color/g' "$_CONF"
         fi
     fi 
     if grep -q "#TotalDownload" "$_CONF"; then
         log "$LOG_INFO" "Enabling package manager total download mode."
         if [[ "$ALTER" == "" ]]; then
-            sudo sed -i 's/#TotalDownload/TotalDownload/g'
+            sudo sed -i 's/#TotalDownload/TotalDownload/g' "$_CONF"
         fi
     fi 
 }
