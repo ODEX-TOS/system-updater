@@ -102,3 +102,4 @@ TOS version 0.6 Beta
 - Decrease cpu time to less that 1% on average systems
 - Fixed client rules
 - Made image footprint smaller
+- Fixed regression with file descriptors over long periods of time
