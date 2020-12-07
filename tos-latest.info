@@ -103,3 +103,4 @@ TOS version 0.6 Beta
 - Fixed client rules
 - Made image footprint smaller
 - Fixed regression with file descriptors over long periods of time
+- Fixed regression in showing up the help cheatsheet
