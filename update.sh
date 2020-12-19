@@ -449,6 +449,22 @@ function zsh-completion-plugin {
 	fi
 
     log "$LOG_INFO" "Plugin enabled, reload terminal to take affect"
+
+    # configure the plugin
+
+    PLUGIN_CONF="$HOME/.oh-my-zsh/load/preload/config.sh"
+
+    log "$LOG_INFO" "Setting TAB key to cycle through the menu"
+
+    if grep -q "zstyle ':autocomplete:tab:*' widget-style menu-select" "$PLUGIN_CONF"; then
+        log "$LOG_INFO" "Plugin already configured"
+        return
+    fi
+    
+    if [[ "$ALTER" == "" ]]; then
+        echo "zstyle ':autocomplete:tab:* widget-style menu-select''" >> "$PLUGIN_CONF"
+    fi
+    log "$LOG_INFO" "ZSH plugin configured"
 }
 
 function run {
