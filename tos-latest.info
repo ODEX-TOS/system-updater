@@ -106,3 +106,4 @@ TOS version 0.6 Beta
 - Fixed regression with file descriptors over long periods of time
 - Fixed regression in showing up the help cheatsheet
 - Steam now uses it's own titlebar
+- Gnome applications no longer complain about a missing network connection
