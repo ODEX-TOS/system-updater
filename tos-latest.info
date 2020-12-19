@@ -64,6 +64,7 @@ TOS version 0.6 Beta
 - Add support for Picture-In-Picture mode
 - Added advanced calculator to app launcher (Supports Symbols, Functions, Units, Variables, Algebra, Calculus, matrices, vectors and more)
 - You can now exclude certain applications from using the default titlebar
+- Added zsh-completion zsh plugin
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery

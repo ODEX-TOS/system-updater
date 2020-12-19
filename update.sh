@@ -423,6 +423,34 @@ function pacman-conf {
     fi 
 }
 
+# check if the zsh-completion plugin is installed
+function zsh-completion-plugin {
+    # download plugin section
+    COMPLETION_DIR="$HOME/.oh-my-zsh/custom/plugins/zsh-autocomplete"
+    if [[ -d "$COMPLETION_DIR" ]]; then
+        log "$LOG_INFO" "ZSH autocomplete is already installed and configured"
+        return 
+    fi
+    log "$LOG_INFO" "Installing zsh-autocompletion function"
+    if [[ "$ALTER" == "" ]]; then 
+        git clone git@github.com:marlonrichert/zsh-autocomplete.git "$COMPLETION_DIR"
+    fi
+   
+    # enable plugin section
+
+    PLUGIN_FILE="$HOME/.oh-my-zsh/load/preload/plugins.sh"
+    if grep -q "zsh-autocomplete" "$PLUGIN_FILE"; then
+        log "$LOG_INFO" "Plugin enabled, reload terminal to take affect"
+        return
+    fi
+
+	if [[ "$ALTER" == "" ]]; then
+		sed -i 's/plugins=(/plugins=(\n  zsh-autocomplete/g' "$PLUGIN_FILE"
+	fi
+
+    log "$LOG_INFO" "Plugin enabled, reload terminal to take affect"
+}
+
 function run {
         prepare-firefox # convert your firefox installation
         fix-default-image
@@ -437,6 +465,7 @@ function run {
         services
         etc-issue
         pacman-conf
+        zsh-completion-plugin
 }   
 
 run
