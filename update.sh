@@ -467,6 +467,33 @@ function zsh-completion-plugin {
     log "$LOG_INFO" "ZSH plugin configured"
 }
 
+function zsh-syntax-highlight {
+    PLUGIN_FILE="$HOME/.oh-my-zsh/load/preload/plugins.sh" 
+    if grep -q "fast-syntax-highlighting" "$PLUGIN_FILE"; then
+        return
+    fi
+
+    log "$LOG_INFO" "Changing zsh syntax highlighter from zsh-syntax to fast-syntax"
+    if [[ "$ALTER" == "" ]]; then
+        sed -i 's;zsh-syntax-highlighting;fast-syntax-highlighting;g' "$PLUGIN_FILE"
+    fi
+
+
+    COMPLETION_DIR="$HOME/.oh-my-zsh/custom/plugins/fast-syntax-highlighting"
+    if [[ -d "$COMPLETION_DIR" ]]; then
+        return
+    fi
+    
+    log "$LOG_INFO" "Downloading new plugin"
+    if [[ "$ALTER" == "" ]]; then
+        git clone https://github.com/marlonrichert/fast-syntax-highlighting.git "$COMPLETION_DIR"
+    fi
+
+    log "$LOG_INFO" "Finished setting up syntax highlighting plugin"
+
+
+}
+
 function run {
         prepare-firefox # convert your firefox installation
         fix-default-image
@@ -482,6 +509,7 @@ function run {
         etc-issue
         pacman-conf
         zsh-completion-plugin
+        zsh-syntax-highlight
 }   
 
 run
