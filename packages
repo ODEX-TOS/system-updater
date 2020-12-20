@@ -3,5 +3,4 @@ tos-base-desktop
 tos/filesystem
 tos/systemd
 tde-contrib
-
-
+ttf-ubuntu-font-family

@@ -490,8 +490,15 @@ function zsh-syntax-highlight {
     fi
 
     log "$LOG_INFO" "Finished setting up syntax highlighting plugin"
+}
 
-
+function fonts {
+        FONT_CONF="$HOME/.config/fontconfig/fonts.conf"
+        log "$LOG_INFO" "Updating fonts"
+        if [[ "$ALTER" == "" ]]; then
+            sed -i 's;Linux Libertine;Liberation Serif;g' "$FONT_CONF"
+            sed -i 's;Linux Biolinum;Ubuntu;g' "$FONT_CONF"
+        fi
 }
 
 function run {
@@ -510,6 +517,7 @@ function run {
         pacman-conf
         zsh-completion-plugin
         zsh-syntax-highlight
+        fonts
 }   
 
 run
