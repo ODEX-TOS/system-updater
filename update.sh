@@ -433,7 +433,7 @@ function zsh-completion-plugin {
     fi
     log "$LOG_INFO" "Installing zsh-autocompletion function"
     if [[ "$ALTER" == "" ]]; then 
-        git clone git@github.com:marlonrichert/zsh-autocomplete.git "$COMPLETION_DIR"
+        git clone https://github.com/marlonrichert/zsh-autocomplete.git "$COMPLETION_DIR"
     fi
    
     # enable plugin section
