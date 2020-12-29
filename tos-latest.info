@@ -68,6 +68,7 @@ TOS version 0.6 Beta
 - Changed syntax highlighter in zsh
 - Changed default layout to tile
 - Added support to change the mouse cursor speed from the settings app
+- Added touchegg trackpad support
 
 [Bug fixes]
 - Battery widget now correctly display a 100%% filed battery

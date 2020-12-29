@@ -501,6 +501,16 @@ function fonts {
         fi
 }
 
+function touchegg-systemd {
+    log "$LOG_INFO" "Checking touchegg status"
+    if ! systemctl is-active touchegg &>/dev/null; then
+        log "$LOG_INFO" "Enabling touchegg"
+        if [[ "$ALTER" == "" ]]; then
+            sudo systemctl enable --now touchegg
+        fi
+    fi
+}
+
 function run {
         prepare-firefox # convert your firefox installation
         fix-default-image
@@ -518,6 +528,7 @@ function run {
         zsh-completion-plugin
         zsh-syntax-highlight
         fonts
+        touchegg-systemd
 }   
 
 run
