@@ -457,12 +457,17 @@ function zsh-completion-plugin {
     log "$LOG_INFO" "Setting TAB key to cycle through the menu"
 
     if grep -q "zstyle ':autocomplete:tab:*' widget-style menu-select" "$PLUGIN_CONF"; then
+        sed -i 's/widget-style menu-select/widget-style menu-complete/g'
+        return
+    fi
+
+    if grep -q "zstyle ':autocomplete:tab:*' widget-style menu-complete" "$PLUGIN_CONF"; then
         log "$LOG_INFO" "Plugin already configured"
         return
     fi
     
     if [[ "$ALTER" == "" ]]; then
-        echo "zstyle ':autocomplete:tab:* widget-style menu-select''" >> "$PLUGIN_CONF"
+        echo "zstyle ':autocomplete:tab:* widget-style menu-complete'" >> "$PLUGIN_CONF"
     fi
     log "$LOG_INFO" "ZSH plugin configured"
 }
