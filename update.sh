@@ -516,6 +516,21 @@ function touchegg-systemd {
     fi
 }
 
+function check_qt_5_theme {
+    log "$LOG_INFO" "Checking qt5 theme status"
+    kvantum_conf="$HOME/.config/Kvantum"
+    qt5ct_conf="$HOME/.config/qt5ct"
+    if [[ ! -d "$kvantum_conf" ]]; then
+        log "$LOG_INFO" "Kvantum theme configuration is not present. Generating..."
+        [[ "$ALTER" == "" ]] && cp -r "/etc/skel/.config/Kvantum" "$HOME/.config"
+    fi
+
+    if [[ ! -d "$qt5ct_conf" ]]; then
+        log "$LOG_INFO" "QT5CT configuration is not present. Generating..."
+        [[ "$ALTER" == "" ]] && cp -r "/etc/skel/.config/qt5ct" "$HOME/.config"
+    fi
+}
+
 function run {
         prepare-firefox # convert your firefox installation
         fix-default-image
@@ -534,6 +549,7 @@ function run {
         zsh-syntax-highlight
         fonts
         touchegg-systemd
+        check_qt_5_theme
 }   
 
 run
