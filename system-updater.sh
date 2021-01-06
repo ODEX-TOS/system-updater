@@ -228,7 +228,17 @@ function clear-cache {
 function checkArchConflicts {
     executable=$(mktemp)
     curl -fsS "$CONFLICT" -o "$executable"
-    bash "$executable" "$LOG_SUPRESS"
+    ECODE="$(bash "$executable" "$LOG_SUPRESS")"
+    if [[ "$?" != "0" ]]; then
+        log "$LOG_ERROR" "$ECODE"
+        log "$LOG_ERROR" "The above error was thrown in the conflicts hook"
+        log "$LOG_ERROR" "This is a check to make sure that updates won't fail"
+        log "$LOG_ERROR" "The source code for this check is $CONFLICT"
+        log "$LOG_ERROR" "See what the issue is to manually resolve it"
+        rm "$executable"
+        exit 1
+    fi
+    log "$LOG_INFO" "$ECODE"
     rm "$executable"
 }
 

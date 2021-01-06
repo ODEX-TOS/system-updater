@@ -36,7 +36,7 @@ function abort {
 
 function check-pacman {
     if [[ "$(command -v pacman)" == "" ]]; then
-            abort "This system doesn't contain the correct package manager"
+        abort "This system doesn't contain the correct package manager"
     fi
 }
 
@@ -46,7 +46,7 @@ function check-package-installed {
     repo=$(printf "$1" | cut -d "/" -f1)
     package=$(printf "$1" | cut -d "/" -f2)
     if ! pacman -Sl | grep -Eq "$repo $package.*\[installed\]"; then
-            abort "package $1 is not installed on the system. $2"
+        abort "package $1 is not installed on the system. $2"
     fi
 }
 
@@ -54,7 +54,7 @@ function check-package-installed {
 function run {
     check-pacman
     #check-package-installed "tos/filesystem" "Installing it will remove your passwords.\nMake sure you have a shell with root privileges and execute the following command\nfind /etc -type f -name '*.pacsave' -exec rename -d ''.pacsave' {} +\nAfter installing this package or you will not be able to log in again."
-
+    check-package-installed "tos/tos-base" "Installing it is required as this tool depends on it"
     # everything went well. Notifying the user
     printf "pre-check is a success"
     exit 0
