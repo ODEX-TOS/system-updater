@@ -90,6 +90,7 @@ function keyring {
            fake-keyring || exit 1
            sudo pacman -U "https://repo.odex.be/tos-keyring-20200422-1-any.pkg.tar.zst" || exit 1
            log "$LOG_INFO" "Keyring installed"
+           sudo /usr/bin/pacman-key --populate
    fi 
 }
 
@@ -135,7 +136,7 @@ function run {
         out=$(echo "$out" "$(version-check 'hplip' '3.20.3-2' '--overwrite /usr/share/hplip/\*')") # date: 2020-03-19
         out=$(echo "$out" "$(version-check 'firewalld' '0.8.1_2' '--overwrite /usr/lib/python3.8/site-packages/firewall/\*')") # date: 2020-03-01
 
-        out=$(echo "$out" "$(version-check 'awesome-tos' '4.3.10212.7-1' '--overwrite /usr/share/xsessions/tde.desktop')")
+        out=$(echo "$out" "$(version-check 'tde' '4.3.10212.7-1' '--overwrite /usr/share/xsessions/tde.desktop')")
 
         out=$(echo "$out" "$(replace-package 'compton-tryone-tos' 'picom-tryone-tos')")
 
@@ -143,7 +144,7 @@ function run {
         log "$LOG_WARN" "pacman -Syu --noconfirm $out"
         if [[ "$ALTER" == "" &&  ! -z "$out" ]]; then
                 log "$LOG_INFO" "root privileges are required to update the system packages"
-                sudo pacman -Syu --noconfirm $out || (log "$LOG_ERROR" "Updating the system failed. Check https://www.archlinux.org/ for the latest news"; exit 1)
+                sudo pacman -Syu --noconfirm $out || { log "$LOG_ERROR" "Updating the system failed. Check https://www.archlinux.org/ for the latest news" ; exit 1; }
                 log "$LOG_INFO" "Update is successful!"
         fi
         cleanup-keyring

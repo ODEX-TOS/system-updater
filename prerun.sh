@@ -50,22 +50,10 @@ function check-package-installed {
     fi
 }
 
-function check-rofi-tos {
-    repo="tos"
-    package="rofi-tos"
-    if ! pacman -Sl | grep -Eq "$repo $package.*\[installed\]"; then
-            # remove the old rofi
-            sudo pacman -Rns awesome-tos tos-tools rofi
-            # install the packages again
-            sudo pacman -Syu awesome-tos || exit 1
-    fi
-}
-
 
 function run {
     check-pacman
     #check-package-installed "tos/filesystem" "Installing it will remove your passwords.\nMake sure you have a shell with root privileges and execute the following command\nfind /etc -type f -name '*.pacsave' -exec rename -d ''.pacsave' {} +\nAfter installing this package or you will not be able to log in again."
-    check-rofi-tos
 
     # everything went well. Notifying the user
     printf "pre-check is a success"
