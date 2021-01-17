@@ -70,8 +70,10 @@ TOS version 0.6 Beta
 - Changed default layout to tile
 - Added support to change the mouse cursor speed from the settings app
 - Added touchegg trackpad support
+- Animations have been added to TDE
 
 [Bug fixes]
+- The desktop environment now rerenders itself after screen resolution changes
 - Battery widget now correctly display a 100%% filed battery
 - package updater widget no longer requires the user to update the local package database
 - Quake terminal dropdown now correctly functions
