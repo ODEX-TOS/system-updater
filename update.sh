@@ -531,6 +531,21 @@ function check_qt_5_theme {
     fi
 }
 
+function reflector_timer {
+        if ! systemctl is-active reflector.timer &>/dev/null; then
+            log "$LOG_INFO" "Not syncing the fastest repository."
+            if [[ "$ALTER" == "" ]]; then
+                log "$LOG_INFO" "Manually syncing speed"
+                sudo reflector --verbose --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
+                log "$LOG_INFO" "Sorted the fastest mirrors"
+                log "$LOG_INFO" "Enabling weekly sync timer"
+                sudo systemctl enable reflector.timer
+            fi
+        else
+            log "$LOG_INFO" "Syncing mirrors is enabled"
+        fi
+}
+
 function run {
         prepare-firefox # convert your firefox installation
         fix-default-image
@@ -550,6 +565,7 @@ function run {
         fonts
         touchegg-systemd
         check_qt_5_theme
+        reflector_timer
 }   
 
 run

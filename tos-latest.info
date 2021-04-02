@@ -71,6 +71,7 @@ TOS version 0.6 Beta
 - Added support to change the mouse cursor speed from the settings app
 - Added touchegg trackpad support
 - Animations have been added to TDE
+- Weekly sync the fastest mirrors for optimal updating
 
 [Bug fixes]
 - The desktop environment now rerenders itself after screen resolution changes
