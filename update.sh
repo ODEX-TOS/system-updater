@@ -546,6 +546,17 @@ function reflector_timer {
         fi
 }
 
+function grc_colorizer {
+        log "$LOG_INFO" "checking colorizer status"
+        if ! grep -q "source /etc/grc.zsh" "$HOME/.oh-my-zsh/load/etc.sh"; then
+                log "$LOG_INFO" "colorized utilities not found, enabling setting"
+                echo "if [[ -f "/etc/grc.zsh" ]]; then" >> "$HOME/.oh-my-zsh/load/etc.sh"
+                echo "  source /etc/grc.zsh" >> "$HOME/.oh-my-zsh/load/etc.sh"
+                echo "fi" >> "$HOME/.oh-my-zsh/load/etc.sh"
+                log "$LOG_INFO" "grc is enabled"
+        fi
+}
+
 function run {
         prepare-firefox # convert your firefox installation
         fix-default-image
@@ -566,6 +577,7 @@ function run {
         touchegg-systemd
         check_qt_5_theme
         reflector_timer
+        grc_colorizer
 }   
 
 run

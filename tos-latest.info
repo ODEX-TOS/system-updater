@@ -2,6 +2,7 @@
 TOS version 0.6 Beta
 
 [New Features]
+- Added extra colorized utility output
 - Added a new default qt theme for qt5 based applications
 - Added translation support (dutch implemented) based on the system language
 - Added a brightness and volume overlay
