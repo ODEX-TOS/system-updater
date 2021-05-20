@@ -547,7 +547,7 @@ function reflector_timer {
 }
 
 function grc_colorizer {
-        log "$LOG_INFO" "checking colorizer status"
+        log "$LOG_INFO" "Checking colorizer status"
         if ! grep -q "source /etc/grc.zsh" "$HOME/.oh-my-zsh/load/etc.sh"; then
                 log "$LOG_INFO" "colorized utilities not found, enabling setting"
                 echo "if [[ -f "/etc/grc.zsh" ]]; then" >> "$HOME/.oh-my-zsh/load/etc.sh"
@@ -555,6 +555,15 @@ function grc_colorizer {
                 echo "fi" >> "$HOME/.oh-my-zsh/load/etc.sh"
                 log "$LOG_INFO" "grc is enabled"
         fi
+}
+
+function pacman_6_total_download () {
+	log "$LOG_INFO" "Checking /etc/pacman.conf"	
+	if grep -q "TotalDownloads" /etc/pacman.conf; then
+		log "$LOG_WARN" "Misconfigured pacman.conf, pacman 6 will not work properly, fixing..."
+		sudo sed 's/TotalDownload//g' /etc/pacman.conf
+	fi
+
 }
 
 function run {
@@ -578,6 +587,7 @@ function run {
         check_qt_5_theme
         reflector_timer
         grc_colorizer
+	pacman_6_total_download
 }   
 
 run
