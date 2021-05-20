@@ -561,7 +561,14 @@ function pacman_6_total_download () {
 	log "$LOG_INFO" "Checking /etc/pacman.conf"	
 	if grep -q "TotalDownloads" /etc/pacman.conf; then
 		log "$LOG_WARN" "Misconfigured pacman.conf, pacman 6 will not work properly, fixing..."
-		sudo sed 's/TotalDownload//g' /etc/pacman.conf
+		sudo sed -i 's/TotalDownload//g' /etc/pacman.conf
+	fi
+
+	# check if pacman support parallel downloads
+	local major_version="$(pacman -Q pacman | cut -d' ' -f2 | cut -d'.' -f1)"
+	if [[ "$major_version" -gt "5" && "$(! grep -q ParallelDownloads /etc/pacman.conf)" ]]; then
+		log "$LOG_INFO" "Fresh pacman 6 found, enabeling parallel downloads"
+		sudo sed -i 's/Color/Color\nParallelDownloads = 5/g' /etc/pacman.conf
 	fi
 
 }
