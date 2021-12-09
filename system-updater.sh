@@ -97,7 +97,7 @@ function version {
 # see what the new updates are
 function difference {
     # get the raw datastream
-    data=$(curl -fsS "$LATEST_INFO_URL")
+    data=$(curl -fsSL "$LATEST_INFO_URL")
 
     # find all sections 
     OLDIFS="$IFS"
@@ -132,7 +132,7 @@ function update {
     fi
     
     # get the packages from the repo
-    data=$(curl -fsS "$PACKAGES")
+    data=$(curl -fsSL "$PACKAGES")
 
     # filter all packages in the blacklist out of all packages
     for item in $blacklist; do
@@ -167,7 +167,7 @@ function update {
     fi
    
     executable=$(mktemp) 
-    curl -fsS "$UPDATER" -o "$executable"
+    curl -fsSL "$UPDATER" -o "$executable"
     # supply stat send env variable to the updater execution
     SEND_STATS="$SEND_STATS" bash "$executable" "$1" "$2" "$LOG_SUPRESS"
     rm "$executable"
@@ -176,7 +176,7 @@ function update {
 
     # installation is successfull, updating version
     log "$LOG_WARN" "Updating your system version number requires root permissions"
-    sudo curl -fsS "$NEW_VERSION_URL" -o /etc/version
+    sudo curl -fsSL "$NEW_VERSION_URL" -o /etc/version
     log "$LOG_VERSION" "$(cat /etc/version)"
 }
 
@@ -197,7 +197,7 @@ function commit {
 
 function print-packages {
     log "$LOG_INFO" "Downloading required package data"
-    curl -fsS "$PACKAGES"
+    curl -fsSL "$PACKAGES"
     log "$LOG_INFO" "Packages downloaded"
 }
 
@@ -227,7 +227,7 @@ function clear-cache {
 
 function checkArchConflicts {
     executable=$(mktemp)
-    curl -fsS "$CONFLICT" -o "$executable"
+    curl -fsSL "$CONFLICT" -o "$executable"
     ECODE="$(bash "$executable" "$LOG_SUPRESS")"
     if [[ "$?" != "0" ]]; then
         log "$LOG_ERROR" "$ECODE"
@@ -267,7 +267,7 @@ function rank {
     echo "sudo mv /etc/pacman.d/mirrorlist$datetime.backup /etc/pacman.d/mirrorlist"
     log "$LOG_INFO" "Pulling newest mirrorlist"
     tmp=$(mktemp)
-    curl -fsS https://www.archlinux.org/mirrorlist/all/ > "$tmp" || exit 1 
+    curl -fsSL https://www.archlinux.org/mirrorlist/all/ > "$tmp" || exit 1 
     mirrors=$(awk '$0 ~ /^Server|^#Server/{print $0}' "$tmp" | wc -l)
     if ! sudo sed -i 's/^#Server/Server/g' "$tmp"; then
             log "$LOG_ERROR" "Failed editing downloaded file"
@@ -284,7 +284,7 @@ function rank {
 
 function info {
     log "$LOG_INFO" "Current tos version: ${ORANGE}$(cat /etc/version)${NC}"
-    log "$LOG_INFO" "Newest version: ${ORANGE}$(curl -fsS $NEW_VERSION_URL)${NC}"
+    log "$LOG_INFO" "Newest version: ${ORANGE}$(curl -fsSL $NEW_VERSION_URL)${NC}"
 }
 
 # perform a check to see if the update should take plase or the user HAS to manually intervene
